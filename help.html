@@ -5,46 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <title>تماس تصویری RemoteVM</title>
-    <meta name="description" content="تماس تصویری دوطرفه با کیفیت بالا با RemoteVM">
-    <meta name="keywords" content="تماس تصویری, RemoteVM, ویدیو کنفرانس, تماس آنلاین">
-    <meta name="author" content="RemoteVM">
-    <meta name="robots" content="index, follow">
+    <title>راهنمای استفاده و تماس تصویری RemoteVM</title>
+    <meta name="description" content="راهنمای جامع استفاده از تماس تصویری RemoteVM و راه‌اندازی جلسات ویدیویی امن.">
+    <meta name="keywords" content="RemoteVM, تماس تصویری, راهنما, جلسات ویدیویی, ویدیو کنفرانس">
+    <link rel="canonical" href="https://call.remotevm.ir/guide">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="تماس تصویری RemoteVM">
-    <meta property="og:description" content="با RemoteVM تماس‌های تصویری دوطرفه امن و با کیفیت بالا برقرار کنید.">
-    <meta property="og:url" content="https://call.remotevm.ir">
-    <meta property="og:site_name" content="RemoteVM Call">
-    <meta property="og:image" content="https://call.remotevm.ir/og-image.png">
-    <meta property="og:locale" content="fa_IR">
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "RemoteVM Call",
-      "description": "پلتفرم تماس تصویری دوطرفه با امکانات پیشرفته و کیفیت بالا.",
-      "url": "https://call.remotevm.ir",
-      "applicationCategory": "Communication",
-      "operatingSystem": "Web",
-      "inLanguage": "fa-IR",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "IRR",
-        "availability": "https://schema.org/InStock"
-      }
-    }
-    </script>
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css" as="style">
     
     <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    
-    <link rel="preconnect" href="https://server.remotevm.ir">
-    <link rel="dns-prefetch" href="https://server.remotevm.ir">
     
     <style>
         * {
@@ -70,12 +41,11 @@
 
         body {
             font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+            background: var(--dark-bg);
             color: var(--text-primary);
+            line-height: 1.6;
             min-height: 100vh;
-            overflow-y: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 3rem;
         }
 
         ::-webkit-scrollbar {
@@ -96,137 +66,141 @@
             background: var(--primary-color);
         }
 
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1rem;
-        }
-
-        .login-card {
+        .guide-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 500px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             border: 1px solid var(--border-color);
         }
 
-        .login-header {
+        .guide-header {
             text-align: center;
-            margin-bottom: 1.2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
         }
 
-        .login-logo {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 0.8rem;
-        }
-
-        .login-title {
-            font-size: 1.6rem;
-            color: var(--text-primary);
-        }
-
-        .login-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .action-btn {
-            padding: 1.5rem 0.8rem;
-            background: var(--dark-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .action-btn:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-4px);
-        }
-
-        .action-btn i {
+        .guide-header h1 {
             font-size: 2rem;
-            margin-bottom: 0.8rem;
-            color: var(--info);
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
         }
 
-        .action-btn h3 {
-            font-size: 1rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .action-btn p {
-            font-size: 0.8rem;
-        }
-
-        .form-section {
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.4rem;
+        .guide-header p {
             color: var(--text-secondary);
         }
 
-        .form-input {
-            width: 100%;
-            padding: 0.6rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+        .section-title {
+            font-size: 1.5rem;
             color: var(--text-primary);
+            border-right: 4px solid var(--success);
+            padding-right: 0.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
+        .section-intro-text {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
         }
 
-        .previous-rooms {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.8rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            max-height: 150px;
-            overflow-y: auto;
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
-        .previous-room {
-            padding: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
+        .feature-item {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--info);
+        }
+
+        .feature-item i {
+            font-size: 1.5rem;
+            color: var(--info);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item h4 {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .section-divider {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 3rem 0;
+        }
+
+        .role-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .role-card {
+            background: var(--dark-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             transition: var(--transition);
         }
 
-        .previous-room:hover {
-            background: var(--dark-bg);
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
 
-        .button-group {
+        .role-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
             display: flex;
-            gap: 0.8rem;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .role-card .role-description {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .role-card ul {
+            list-style: none;
+            padding-right: 1.2rem;
+        }
+
+        .role-card ul li {
+            position: relative;
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .role-card ul li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -1.2rem;
+            top: 2px;
+            color: var(--success);
         }
 
         .btn {
@@ -236,6 +210,11 @@
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
         }
 
         .btn-primary {
@@ -245,71 +224,17 @@
 
         .btn-primary:hover {
             background: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
-        .btn-secondary {
-            background: var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background: #475569;
-        }
-
-        .success-section {
-            background: linear-gradient(135deg, var(--success), var(--primary-color));
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 1.2rem;
-        }
-
-        .success-icon {
-            text-align: center;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 0.8rem;
-        }
-
-        .success-title {
-            color: white;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .info-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-        }
-
-        .info-label {
+        .btn-success {
+            background: var(--success);
             color: white;
         }
 
-        .info-value {
-            color: var(--warning);
-        }
-
-        .copy-btn {
-            padding: 0.3rem 0.6rem;
-            background: var(--info);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 0.5rem;
-        }
-
-        .copy-btn:hover {
-            background: #0e7490;
+        .btn-success:hover {
+            background: #0d946d;
+            transform: translateY(-2px);
         }
 
         .call-container {
@@ -343,58 +268,6 @@
             position: absolute;
             top: 0;
             left: 0;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .spinner {
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            color: var(--text-primary);
-            margin-top: 0.8rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .toast {
-            position: fixed;
-            top: 70px;
-            right: 15px;
-            background: var(--success);
-            color: white;
-            padding: 0.8rem 1.2rem;
-            border-radius: 6px;
-            display: none;
-            z-index: 10000;
-        }
-
-        .toast.show {
-            display: block;
         }
 
         .call-header {
@@ -530,11 +403,18 @@
         }
 
         @media (max-width: 768px) {
-            .action-buttons {
-                grid-template-columns: 1fr;
+            .guide-container {
+                margin: 1rem;
+                padding: 1rem;
             }
-            .login-card {
-                max-width: 90%;
+            .guide-header h1 {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .feature-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
             }
             .call-header {
                 padding: 0.3rem 0.5rem;
@@ -549,10 +429,7 @@
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loadingText">در حال ایجاد تماس و اتصال به سرور RemoteVM...</div>
-    </div>
+
 
     <header class="call-header" id="callHeader">
         <div class="header-logo">
@@ -565,7 +442,7 @@
         </div>
         <div class="top-controls">
             <button class="menu-btn" onclick="toggleSideMenu()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
-            <button class="btn btn-danger" onclick="leaveCall()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+  
         </div>
     </header>
 
@@ -586,12 +463,141 @@
         </div>
         <ul class="menu-items">
             <li><a href="/" target="_blank" rel="noopener noreferrer" aria-label="صفحه اصلی"><i class="fas fa-home"></i> خانه</a></li>
-            <li><a href="./help.html" target="_blank" rel="noopener noreferrer" aria-label="راهنما"><i class="fas fa-question-circle"></i> راهنما</a></li>
+            <li><a href="/guide" target="_blank" rel="noopener noreferrer" aria-label="راهنما"><i class="fas fa-question-circle"></i> راهنما</a></li>
             <li><a href="https://seccam.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i> Security Cam</a></li>
-            <li><a href="https://classroom.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-chalkboard-teacher"></i> ClassRoom</a></li>
-            <li><a href="https://webcam.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-mobile-alt"></i> Phone to Webcam</a></li>              
             <li><a href="https://remotevm.ir/product" target="_blank" rel="noopener noreferrer"><i class="fas fa-box-open"></i> محصولات</a></li>
         </ul>
+    </div>
+
+    <div class="guide-container">
+        <header class="guide-header">
+            <h1>
+                <i class="fas fa-video" style="color: var(--primary-color);"></i>
+                راهنمای استفاده و تماس تصویری <span class="app-name">RemoteVM</span>
+            </h1>
+            <p>راهنمای جامع استفاده از تماس تصویری RemoteVM برای جلسات ویدیویی امن و حرفه‌ای.</p>
+        </header>
+
+        <section id="introduction">
+            <h2 class="section-title">معرفی و ویژگی‌های کلیدی</h2>
+            <p class="section-intro-text">
+                RemoteVM یک پلتفرم پیشرفته تماس تصویری است که برای ارائه تجربه‌ای روان و امن در جلسات ویدیویی طراحی شده است.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>طراحی واکنش‌گرا</h4>
+                    <p>سازگاری کامل با انواع دستگاه‌ها برای دسترسی آسان به تماس‌ها.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i>
+                    <h4>امنیت بالا</h4>
+                    <p>استفاده از رمز عبور و اعتبار سنجی برای جلسات ایمن.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-plug"></i>
+                    <h4>عملکرد بهینه</h4>
+                    <p>بهره‌وری بالا با بارگذاری سریع منابع.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="roles-guide">
+            <h2 class="section-title">راهنمای ورود بر اساس نقش</h2>
+            <p class="section-intro-text">
+                در صفحه ورود، می‌توانید نقش خود را به عنوان «میزبان» یا «شرکت‌کننده» انتخاب کنید تا فرم مناسب نمایش داده شود.
+            </p>
+
+            <div class="role-section">
+                <div class="role-card">
+                    <h3><i class="fas fa-user-tie"></i> راهنمای میزبان</h3>
+                    <p class="role-description">این نقش برای مدیریت و ایجاد جلسات ویدیویی جدید است.</p>
+                    <ul class="role-steps">
+                        <li><strong>انتخاب نقش:</strong> دکمه **«ایجاد تماس جدید»** را انتخاب کنید.</li>
+                        <li><strong>فرم ایجاد تماس:</strong>
+                            <ul class="nested-steps">
+                                <li>**نام شما:** نام کامل خود را وارد کنید (اجباری).</li>
+                                <li>**شناسه اتاق:** یک شناسه منحصر به فرد (فقط حروف انگلیسی و اعداد، حداقل ۶ کاراکتر) انتخاب کنید (اجباری).</li>
+                                <li>**رمز عبور اتاق:** رمز عبوری برای امنیت جلسه (اختیاری).</li>
+                            </ul>
+                        </li>
+                        <li><strong>ورود:</strong> دکمه **«ایجاد و ورود»** را بزنید.</li>
+                        <li><strong>اشتراک‌گذاری:</strong> شناسه و رمز را با شرکت‌کنندگان به اشتراک بگذارید.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <h3><i class="fas fa-users"></i> راهنمای شرکت‌کننده</h3>
+                    <p class="role-description">این نقش برای پیوستن به جلسات ویدیویی موجود است.</p>
+                    <ul class="role-steps">
+                        <li><strong>انتخاب نقش:</strong> دکمه **«پیوستن به تماس»** را انتخاب کنید.</li>
+                        <li><strong>فرم پیوستن به تماس:</strong>
+                            <ul class="nested-steps">
+                                <li>**نام شما:** نامی که در جلسه نمایش داده شود (اجباری).</li>
+                                <li>**شناسه اتاق:** شناسه‌ای که میزبان ارائه کرده است (اجباری).</li>
+                                <li>**رمز عبور اتاق:** رمز عبور دریافت‌شده از میزبان (در صورت وجود).</li>
+                            </ul>
+                        </li>
+                        <li><strong>ورود:</strong> دکمه **«ورود به تماس»** را فشار دهید.</li>
+                        <li><strong>پیام خطا:</strong> در صورت نادرست بودن اطلاعات، پیام خطا نمایش داده می‌شود.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="call-interface">
+            <h2 class="section-title">راهنمای محیط تماس تصویری</h2>
+            <p class="section-intro-text">
+                پس از ورود موفق، وارد محیط تماس خواهید شد که شامل اجزای زیر است:
+            </p>
+
+            <div class="role-section">
+                <div class="role-card">
+                    <h3><i class="fas fa-desktop"></i> نوار ابزار بالا (Header)</h3>
+                    <ul class="interface-features">
+                        <li>**عنوان تماس:** نمایش نام جلسه به رنگ آبی.</li>
+                        <li>**نام کاربر:** نمایش نام شما.</li>
+                        <li>**زمان تماس:** نمایش مدت زمان فعال بودن تماس.</li>
+                        <li>**دکمه منو:** دسترسی به منوی کناری برای اطلاعات بیشتر.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <h3><i class="fas fa-video"></i> ناحیه نمایش ویدیو</h3>
+                    <ul class="interface-features">
+                        <li>**Video Container:** محل نمایش محتوای ویدیویی اصلی.</li>
+                        <li>**دکمه تمام‌صفحه:** برای ورود به حالت تمام‌صفحه.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <h3><i class="fas fa-bars"></i> منوی همبرگری</h3>
+                    <ul class="interface-features">
+                        <li>**منو:** لینک‌های ناوبری سریع.</li>
+                        <li>**اطلاعات تماس:** نمایش شناسه، رمز، و لینک با قابلیت کپی.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="error-handling">
+            <h2 class="section-title">پیام‌ها و مدیریت خطا</h2>
+            <div class="role-card">
+                <h3><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> مدیریت خطا و پیام‌ها</h3>
+                <ul class="interface-features">
+                    <li>**پیام‌های خطا:** نمایش با رنگ قرمز در صورت خطا.</li>
+                    <li>**در حال بارگذاری:** صفحه شفاف با آیکون چرخشی هنگام اتصال.</li>
+                    <li>**پیام موفقیت:** پیام‌های لحظه‌ای با رنگ سبز.</li>
+                </ul>
+            </div>
+        </section>
     </div>
 
     <main class="login-container" id="loginScreen">
@@ -607,19 +613,18 @@
                     <div class="action-btn" onclick="selectAction('create')" tabindex="0" role="button" aria-label="ایجاد تماس جدید">
                         <i class="fas fa-plus-circle"></i>
                         <h3>ایجاد تماس جدید</h3>
-                        <p>یک اتاق تماس جدید ایجاد کنید</p>
+                        <p>یک جلسه ویدیویی جدید ایجاد کنید</p>
                     </div>
                     <div class="action-btn" onclick="selectAction('join')" tabindex="0" role="button" aria-label="پیوستن به تماس">
                         <i class="fas fa-sign-in-alt"></i>
                         <h3>پیوستن به تماس</h3>
-                        <p>با شناسه و رمز تماس به اتاق بپیوندید</p>
+                        <p>به جلسه ویدیویی موجود بپیوندید</p>
                     </div>
                 </div>
             </section>
 
             <section class="form-section" id="createCallForm">
                 <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-plus-circle"></i> ایجاد تماس جدید</h2>
-                <div class="previous-rooms" id="previousCreateRooms"></div>
                 <form onsubmit="return false;">
                     <div class="form-group">
                         <label class="form-label" for="userName">نام شما <span style="color: var(--danger);">*</span></label>
@@ -645,7 +650,7 @@
                 <div id="successMessage" style="display: none;">
                     <div class="success-section">
                         <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-                        <h3 class="success-title">اتاق تماس با موفقیت ایجاد شد!</h3>
+                        <h3 class="success-title">تماس با موفقیت ایجاد شد!</h3>
                         <div class="info-box">
                             <div class="info-item">
                                 <span class="info-label">شناسه اتاق:</span>
@@ -663,7 +668,7 @@
                                 <button class="copy-btn" onclick="copyText('roomLinkDisplay')"><i class="fas fa-copy"></i></button>
                             </div>
                         </div>
-                        <p style="text-align: center; color: white;">این اطلاعات را با طرف مقابل به اشتراک بگذارید</p>
+                        <p style="text-align: center; color: white;">این اطلاعات را با شرکت‌کنندگان به اشتراک بگذارید</p>
                         <button class="btn btn-success" onclick="enterCall()">
                             <i class="fas fa-sign-in-alt"></i> ورود به تماس
                         </button>
@@ -673,7 +678,6 @@
 
             <section class="form-section" id="joinCallForm">
                 <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-sign-in-alt"></i> پیوستن به تماس</h2>
-                <div class="previous-rooms" id="previousJoinRooms"></div>
                 <form onsubmit="return false;">
                     <div class="form-group">
                         <label class="form-label" for="joinUserName">نام شما <span style="color: var(--danger);">*</span></label>
@@ -722,12 +726,9 @@
         let localStream = null;
         let callStartTime = null;
         let timerInterval = null;
-        const MAX_ROOMS = 10;
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadStoredData();
             initializeEventListeners();
-            populatePreviousRooms();
         });
 
         function initializeEventListeners() {
@@ -743,65 +744,6 @@
                 showToast('دسترسی به دوربین یا میکروفون وجود ندارد. لطفاً مجوزها را بررسی کنید.', 'error');
                 return { success: false, stream: null };
             }
-        }
-
-        function loadStoredData() {
-            const storedCallInfo = localStorage.getItem('callInfo');
-            const storedUserInfo = localStorage.getItem('userInfo');
-            const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            if (storedCallInfo && storedUserInfo) {
-                callInfo = JSON.parse(storedCallInfo);
-                userInfo = JSON.parse(storedUserInfo);
-                document.getElementById('userName').value = userInfo.name || '';
-                document.getElementById('roomId').value = callInfo.roomId || '';
-                document.getElementById('roomPassword').value = callInfo.password || '';
-                document.getElementById('joinUserName').value = userInfo.name || '';
-                document.getElementById('joinRoomId').value = callInfo.roomId || '';
-                document.getElementById('joinRoomPassword').value = callInfo.password || '';
-            }
-            localStorage.setItem('previousRooms', JSON.stringify(storedRooms.slice(0, MAX_ROOMS)));
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('callInfo', JSON.stringify(callInfo));
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            let storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            const roomData = { roomId: callInfo.roomId, password: callInfo.password, name: userInfo.name, timestamp: Date.now() };
-            const existingIndex = storedRooms.findIndex(r => r.roomId === callInfo.roomId);
-            if (existingIndex > -1) storedRooms.splice(existingIndex, 1);
-            storedRooms.unshift(roomData);
-            if (storedRooms.length > MAX_ROOMS) storedRooms.pop();
-            localStorage.setItem('previousRooms', JSON.stringify(storedRooms));
-            populatePreviousRooms();
-        }
-
-        function populatePreviousRooms() {
-            const createContainer = document.getElementById('previousCreateRooms');
-            const joinContainer = document.getElementById('previousJoinRooms');
-            createContainer.innerHTML = '';
-            joinContainer.innerHTML = '';
-            const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            storedRooms.forEach(room => {
-                const createDiv = document.createElement('div');
-                createDiv.className = 'previous-room';
-                createDiv.textContent = `${room.roomId} (ساخته‌شده توسط ${room.name})`;
-                createDiv.onclick = () => {
-                    document.getElementById('userName').value = room.name;
-                    document.getElementById('roomId').value = room.roomId;
-                    document.getElementById('roomPassword').value = room.password || '';
-                };
-                createContainer.appendChild(createDiv);
-
-                const joinDiv = document.createElement('div');
-                joinDiv.className = 'previous-room';
-                joinDiv.textContent = `${room.roomId} (رمز: ${room.password || 'بدون رمز'})`;
-                joinDiv.onclick = () => {
-                    document.getElementById('joinUserName').value = room.name || '';
-                    document.getElementById('joinRoomId').value = room.roomId;
-                    document.getElementById('joinRoomPassword').value = room.password || '';
-                };
-                joinContainer.appendChild(joinDiv);
-            });
         }
 
         function selectAction(action) {
@@ -854,7 +796,6 @@
 
             callInfo = { roomId, password };
             userInfo = { name: userName };
-            saveToLocalStorage();
 
             const link = `${SERVER_URL}/?proxy&room=${roomId}&host${password ? `&p=${password}` : ''}`;
             document.getElementById('roomIdDisplay').textContent = roomId;
@@ -863,7 +804,7 @@
             document.getElementById('passwordDisplaySection').style.display = password ? 'flex' : 'none';
             document.getElementById('successMessage').style.display = 'block';
 
-            showToast('اتاق تماس با موفقیت ایجاد شد!', 'success');
+            showToast('تماس با موفقیت ایجاد شد!', 'success');
         }
 
         async function enterCall() {
@@ -924,7 +865,6 @@
                 localStream = stream;
                 callInfo = { roomId, password };
                 userInfo = { name: userName };
-                saveToLocalStorage();
 
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('callContainer').classList.add('active');
@@ -973,8 +913,6 @@
                 callInfo = {};
                 userInfo = {};
                 showToast('شما از تماس خارج شدید', 'success');
-                localStorage.removeItem('callInfo');
-                localStorage.removeItem('userInfo');
             }
         }
 
@@ -988,7 +926,7 @@
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             toastMessage.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--success)';
+            toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--success');
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
@@ -1027,27 +965,4 @@
                 document.getElementById('callTimer').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }, 1000);
         }
-
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text)
-                    .then(() => showToast('متن کپی شد!', 'success'))
-                    .catch(() => fallbackCopyText(text));
-            } else {
-                fallbackCopyText(text);
-            }
-        }
-
-        function fallbackCopyText(text) {
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            showToast('متن کپی شد!', 'success');
-        }
     </script>
-</body>
-</html>
