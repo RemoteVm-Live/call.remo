@@ -100,7 +100,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            min-height: calc(100vh - 60px);
             padding: 1rem;
         }
 
@@ -256,6 +256,20 @@
             background: #475569;
         }
 
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            display: none;
+        }
+
+        .btn-danger.active {
+            display: inline-block;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
         .success-section {
             background: linear-gradient(135deg, var(--success), var(--primary-color));
             border-radius: 10px;
@@ -398,7 +412,6 @@
         }
 
         .call-header {
-            display: none;
             position: sticky;
             top: 0;
             background: linear-gradient(90deg, var(--dark-bg), var(--card-bg));
@@ -410,10 +423,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-        .call-header.active {
-            display: flex;
         }
 
         .header-logo {
@@ -529,6 +538,51 @@
             color: var(--warning);
         }
 
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-switch-label {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch-label::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+        }
+
+        .toggle-switch input[type="checkbox"]:checked + .toggle-switch-label {
+            background: var(--primary-color);
+        }
+
+        .toggle-switch input[type="checkbox"]:checked + .toggle-switch-label::after {
+            left: calc(100% - 18px);
+        }
+
+        .toggle-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 768px) {
             .action-buttons {
                 grid-template-columns: 1fr;
@@ -555,17 +609,17 @@
     </div>
 
     <header class="call-header" id="callHeader">
+        <button class="menu-btn" onclick="toggleSideMenu()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
         <div class="header-logo">
             <i class="fas fa-video"></i> RemoteVM
         </div>
-        <div class="call-info">
+        <div class="call-info" id="callInfo">
             <div class="call-title"><i class="fas fa-video"></i><span id="callNameDisplay">تماس تصویری</span></div>
             <div class="user-info" id="userInfoDisplay"><i class="fas fa-user"></i><span id="userNameDisplay">کاربر</span></div>
             <div class="call-timer"><i class="fas fa-clock"></i><span id="callTimer">00:00:00</span></div>
         </div>
         <div class="top-controls">
-            <button class="menu-btn" onclick="toggleSideMenu()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
-            <button class="btn btn-danger" onclick="leaveCall()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            <button class="btn btn-danger" id="leaveCallBtn" onclick="leaveCall()"><i class="fas fa-sign-out-alt"></i> خروج</button>
         </div>
     </header>
 
@@ -581,7 +635,7 @@
             </div>
             <div class="call-info-item">
                 <span class="call-info-label">لینک تماس:</span>
-                <span class="call-info-value" id="menuRoomLink"></span>
+                <button class="copy-btn" id="copyRoomLinkBtn" onclick="copyRoomLink()"><i class="fas fa-copy"></i> کپی لینک</button>
             </div>
         </div>
         <ul class="menu-items">
@@ -632,6 +686,13 @@
                     <div class="form-group">
                         <label class="form-label" for="roomPassword">رمز عبور اتاق (اختیاری)</label>
                         <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور امن وارد کنید">
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="miniPreviewCreate" name="miniPreviewCreate">
+                            <label class="toggle-switch-label" for="miniPreviewCreate"></label>
+                            <span class="toggle-text">Mini self-preview</span>
+                        </div>
                     </div>
                     <div class="button-group">
                         <button type="button" class="btn btn-primary" onclick="createCall()">
@@ -687,6 +748,13 @@
                         <label class="form-label" for="joinRoomPassword">رمز عبور اتاق (در صورت وجود)</label>
                         <input type="password" class="form-input" id="joinRoomPassword" placeholder="رمز عبور دریافت‌شده">
                     </div>
+                    <div class="form-group">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="miniPreviewJoin" name="miniPreviewJoin">
+                            <label class="toggle-switch-label" for="miniPreviewJoin"></label>
+                            <span class="toggle-text">Mini self-preview</span>
+                        </div>
+                    </div>
                     <div class="button-group">
                         <button type="button" class="btn btn-primary" onclick="joinCall()">
                             <i class="fas fa-sign-in-alt"></i> ورود به تماس
@@ -728,6 +796,10 @@
             loadStoredData();
             initializeEventListeners();
             populatePreviousRooms();
+            document.getElementById('callHeader').style.display = 'flex';
+            document.getElementById('callInfo').style.display = 'none';
+            document.getElementById('leaveCallBtn').classList.remove('active');
+            document.getElementById('copyRoomLinkBtn').style.display = 'none';
         });
 
         function initializeEventListeners() {
@@ -758,11 +830,15 @@
                 document.getElementById('joinUserName').value = userInfo.name || '';
                 document.getElementById('joinRoomId').value = callInfo.roomId || '';
                 document.getElementById('joinRoomPassword').value = callInfo.password || '';
+                document.getElementById('miniPreviewCreate').checked = callInfo.miniPreview || false;
+                document.getElementById('miniPreviewJoin').checked = callInfo.miniPreview || false;
             }
             localStorage.setItem('previousRooms', JSON.stringify(storedRooms.slice(0, MAX_ROOMS)));
+            populatePreviousRooms();
         }
 
         function saveToLocalStorage() {
+            callInfo.miniPreview = document.getElementById('miniPreviewCreate').checked || document.getElementById('miniPreviewJoin').checked;
             localStorage.setItem('callInfo', JSON.stringify(callInfo));
             localStorage.setItem('userInfo', JSON.stringify(userInfo));
             let storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
@@ -835,6 +911,9 @@
             document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('actionSelection').style.display = 'block';
+            document.getElementById('callInfo').style.display = 'none';
+            document.getElementById('leaveCallBtn').classList.remove('active');
+            document.getElementById('copyRoomLinkBtn').style.display = 'none';
         }
 
         async function createCall() {
@@ -852,11 +931,14 @@
                 return;
             }
 
-            callInfo = { roomId, password };
+            callInfo = { roomId, password, miniPreview: document.getElementById('miniPreviewCreate').checked };
             userInfo = { name: userName };
             saveToLocalStorage();
 
-            const link = `${SERVER_URL}/?proxy&room=${roomId}&host${password ? `&p=${password}` : ''}`;
+            const linkParams = [`proxy`, `room=${roomId}`, `host`];
+            if (password) linkParams.push(`p=${password}`);
+            if (callInfo.miniPreview) linkParams.push(`minipreview`);
+            const link = `${SERVER_URL}/?${linkParams.join('&')}`;
             document.getElementById('roomIdDisplay').textContent = roomId;
             document.getElementById('roomPassDisplay').textContent = password || 'بدون رمز';
             document.getElementById('roomLinkDisplay').textContent = link;
@@ -877,14 +959,19 @@
                 localStream = stream;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('callContainer').classList.add('active');
-                document.getElementById('callHeader').classList.add('active');
+                document.getElementById('callInfo').style.display = 'flex';
+                document.getElementById('leaveCallBtn').classList.add('active');
+                document.getElementById('copyRoomLinkBtn').style.display = 'inline-block';
 
                 document.getElementById('callNameDisplay').textContent = `اتاق ${callInfo.roomId}`;
                 document.getElementById('userNameDisplay').textContent = userInfo.name;
                 document.getElementById('userInfoDisplay').innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
                 updateSideMenu();
 
-                const callUrl = `${SERVER_URL}/?proxy&room=${callInfo.roomId}&host${callInfo.password ? `&p=${callInfo.password}` : ''}`;
+                const linkParams = [`proxy`, `room=${callInfo.roomId}`, `host`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
                 const iframe = document.getElementById('mainVideoFrame');
                 iframe.src = callUrl;
 
@@ -922,20 +1009,25 @@
                 if (!success) throw new Error('Media access failed');
 
                 localStream = stream;
-                callInfo = { roomId, password };
+                callInfo = { roomId, password, miniPreview: document.getElementById('miniPreviewJoin').checked };
                 userInfo = { name: userName };
                 saveToLocalStorage();
 
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('callContainer').classList.add('active');
-                document.getElementById('callHeader').classList.add('active');
+                document.getElementById('callInfo').style.display = 'flex';
+                document.getElementById('leaveCallBtn').classList.add('active');
+                document.getElementById('copyRoomLinkBtn').style.display = 'inline-block';
 
                 document.getElementById('callNameDisplay').textContent = `اتاق ${callInfo.roomId}`;
                 document.getElementById('userNameDisplay').textContent = userInfo.name;
                 document.getElementById('userInfoDisplay').innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
                 updateSideMenu();
 
-                const callUrl = `${SERVER_URL}/?room=${callInfo.roomId}${callInfo.password ? `&p=${callInfo.password}` : ''}`;
+                const linkParams = [`room=${callInfo.roomId}`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
                 const iframe = document.getElementById('mainVideoFrame');
                 iframe.src = callUrl;
 
@@ -955,6 +1047,15 @@
         }
 
         function leaveCall() {
+            if (!document.getElementById('callContainer').classList.contains('active')) {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('actionSelection').style.display = 'block';
+                document.getElementById('callInfo').style.display = 'none';
+                document.getElementById('leaveCallBtn').classList.remove('active');
+                document.getElementById('copyRoomLinkBtn').style.display = 'none';
+                return;
+            }
+
             if (confirm('آیا از خروج از تماس اطمینان دارید؟')) {
                 if (timerInterval) clearInterval(timerInterval);
                 if (localStream) {
@@ -963,13 +1064,17 @@
                 }
                 document.getElementById('mainVideoFrame').src = '';
                 document.getElementById('callContainer').classList.remove('active');
-                document.getElementById('callHeader').classList.remove('active');
+                document.getElementById('callInfo').style.display = 'none';
+                document.getElementById('leaveCallBtn').classList.remove('active');
+                document.getElementById('copyRoomLinkBtn').style.display = 'none';
                 document.getElementById('sideMenu').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
                 document.getElementById('successMessage').style.display = 'none';
                 document.getElementById('actionSelection').style.display = 'block';
                 document.querySelectorAll('.form-input').forEach(input => input.value = '');
+                document.getElementById('miniPreviewCreate').checked = false;
+                document.getElementById('miniPreviewJoin').checked = false;
                 callInfo = {};
                 userInfo = {};
                 showToast('شما از تماس خارج شدید', 'success');
@@ -1013,8 +1118,21 @@
         function updateSideMenu() {
             document.getElementById('menuRoomId').textContent = callInfo.roomId || '';
             document.getElementById('menuRoomPassword').textContent = callInfo.password || '';
-            document.getElementById('menuRoomLink').textContent = `${SERVER_URL}/?room=${callInfo.roomId}${callInfo.password ? `&p=${callInfo.password}` : ''}`;
             document.getElementById('menuPasswordSection').style.display = callInfo.password ? 'flex' : 'none';
+        }
+
+        function copyRoomLink() {
+            const linkParams = [`room=${callInfo.roomId}`];
+            if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+            if (callInfo.miniPreview) linkParams.push(`minipreview`);
+            const roomLink = `${SERVER_URL}/?${linkParams.join('&')}`;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(roomLink)
+                    .then(() => showToast('لینک تماس کپی شد!', 'success'))
+                    .catch(() => fallbackCopyText(roomLink));
+            } else {
+                fallbackCopyText(roomLink);
+            }
         }
 
         function startCallTimer() {
