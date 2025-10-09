@@ -2,312 +2,1644 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استودیو کنفرانس - RemoteVM</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>تماس تصویری RemoteVM</title>
+    <meta name="description" content="تماس تصویری دوطرفه با کیفیت بالا با RemoteVM">
+    <meta name="keywords" content="تماس تصویری, RemoteVM, ویدیو کنفرانس, تماس آنلاین">
+    <meta name="author" content="RemoteVM">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="تماس تصویری RemoteVM">
+    <meta property="og:description" content="با RemoteVM تماس‌های تصویری دوطرفه امن و با کیفیت بالا برقرار کنید.">
+    <meta property="og:url" content="https://call.remotevm.ir">
+    <meta property="og:site_name" content="RemoteVM Call">
+    <meta property="og:image" content="https://call.remotevm.ir/og-image.png">
+    <meta property="og:locale" content="fa_IR">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "RemoteVM Call",
+      "description": "پلتفرم تماس تصویری دوطرفه با امکانات پیشرفته و کیفیت بالا.",
+      "url": "https://call.remotevm.ir",
+      "applicationCategory": "Communication",
+      "operatingSystem": "Web",
+      "inLanguage": "fa-IR",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "IRR",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+    </script>
+    
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <link rel="preconnect" href="https://server.remotevm.ir">
+    <link rel="dns-prefetch" href="https://server.remotevm.ir">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap');
-        :root {
-            --dark-bg: linear-gradient(135deg, #020412 0%, #0d0d2b 100%);
-            --dark-text: #e2e8f0;
-            --neon-blue: #00bfff;
-            --neon-pink: #ff00c8;
-            --neon-purple: #a45eff;
-            --neon-green: #39ff14;
-            --anim-speed-fast: 1.5s;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        body { background: var(--dark-bg); font-family: 'Vazirmatn', sans-serif; color: var(--dark-text); }
-        .container { position: relative; overflow: hidden; background: rgba(10, 10, 26, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(0, 191, 255, 0.2); border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
-        h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 15px rgba(0, 191, 255, 0.2); }
-        input[type="text"], input[type="password"] { color: var(--dark-text); background-color: rgba(10, 10, 26, 0.7); border: 1px solid transparent; border-image: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)) 1; border-radius: 8px; padding: 10px; box-shadow: inset 0 0 8px rgba(0, 191, 255, 0.2); transition: all 0.3s ease; }
-        input:focus { outline: none; box-shadow: 0 0 10px var(--neon-pink), inset 0 0 8px rgba(255, 0, 200, 0.3); }
-        .btn { position: relative; overflow: hidden; background: rgba(70, 70, 70, 0.4); color: #fff; border: 1px solid rgba(0, 191, 255, 0.2); border-radius: 8px; padding: 12px 24px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease; }
-        .btn:hover { background: rgba(46, 66, 66, 0.6); transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 191, 255, 0.3); }
-        @keyframes animate-top { 0% { left: -100%; } 100% { left: 100%; } }
-        @keyframes animate-right { 0% { top: -100%; } 100% { top: 100%; } }
-        @keyframes animate-bottom { 0% { right: -100%; } 100% { right: 100%; } }
-        @keyframes animate-left { 0% { bottom: -100%; } 100% { bottom: 100%; } }
-        .btn-primary .border-line-blue { position: absolute; display: block; opacity: 0; }
-        .btn-primary:hover .border-line-blue { opacity: 1; }
-        .btn-primary .border-line-blue:nth-child(1) { top: 0; left: -100%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--neon-blue)); }
-        .btn-primary:hover .border-line-blue:nth-child(1) { animation: animate-top var(--anim-speed-fast) linear infinite; }
-        /* ... other neon styles ... */
-        .status-indicator { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-left: 8px; }
-        .status-active { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
-        .status-inactive { background: #ff4444; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--dark-bg); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 1; transition: opacity 0.7s ease; }
-        .overlay.hidden { opacity: 0; pointer-events: none; }
-        .zoom-text { font-size: 4rem; font-weight: bold; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); background-clip: text; color: transparent; }
-        .tooltip:hover::after { content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: rgba(10, 10, 26, 0.95); padding: 6px 12px; border-radius: 5px; font-size: 12px; white-space: nowrap; z-index: 10; }
-        .toggle-switch { display: inline-block; position: relative; width: 60px; height: 34px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-switch .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(10, 10, 26, 0.7); border: 1px solid var(--neon-blue); border-radius: 34px; transition: .4s; }
-        .toggle-switch .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px; background-color: #1a202c; border-radius: 50%; transition: .4s; }
-        .toggle-switch input:checked + .slider { background-color: rgba(57, 255, 20, 0.3); border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
-        .toggle-switch input:checked + .slider:before { transform: translateX(26px); background-color: #fff; }
-        #iframe-container { position: relative; overflow: hidden; border: 1px solid rgba(0, 191, 255, 0.2); border-radius: 0.5rem; background: #000; }
-        .input-error { border-image: linear-gradient(90deg, #ff4444, #ff00c8) 1 !important; }
-        .error-message { color: #ff4444; font-size: 0.8rem; height: 1.2rem; transition: all 0.3s; }
 
-        /* --- Responsive Iframe Styles --- */
-        #iframe-container {
-            width: 100%;
-            aspect-ratio: 16/9;
-            min-height: 320px;
-            background: #000;
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0.5rem;
-            overflow: hidden;
+            min-height: calc(100vh - 60px);
+            padding: 1rem;
         }
-        #vdoFrame {
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
             width: 100%;
-            height: 100%;
-            min-height: 320px;
-            border: none;
-            border-radius: 0.5rem;
-            background: #000;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .login-title {
+            font-size: 1.6rem;
+            color: var(--text-primary);
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .action-btn {
+            padding: 1.5rem 0.8rem;
+            background: var(--dark-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+        }
+
+        .action-btn i {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--info);
+        }
+
+        .action-btn h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .action-btn p {
+            font-size: 0.8rem;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
             display: block;
         }
-        @media (max-width: 600px) {
-            #iframe-container {
-                width: 100vw;
-                min-width: 100vw;
-                max-width: 100vw;
-                aspect-ratio: 6/19;
-                min-height: 180px;
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.6rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-input.error {
+            border-color: var(--danger);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .accordion {
+            margin-bottom: 1rem;
+        }
+
+        .accordion-header {
+            background: var(--dark-bg);
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background: #2d3748;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .previous-room {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .previous-room:hover {
+            background: var(--dark-bg);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            display: none;
+        }
+
+        .btn-danger.active {
+            display: inline-block;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .success-section {
+            background: linear-gradient(135deg, var(--success), var(--primary-color));
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.2rem;
+        }
+
+        .success-icon {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .success-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label {
+            color: white;
+        }
+
+        .info-value {
+            color: var(--warning);
+        }
+
+        .copy-btn {
+            padding: 0.3rem 0.6rem;
+            background: var(--info);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: #0e7490;
+        }
+
+        .call-container {
+            display: none;
+            min-height: calc(100vh - 60px);
+            position: relative;
+        }
+
+        .call-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-section {
+            flex: 1;
+            position: relative;
+        }
+
+        .video-container {
+            width: 90%;
+            height: 90%;     
+            align-items: center;
+            justify-content: center;            
+            flex: 1;
+            background: var(--dark-bg);
+            position: relative;
+            min-height: 0;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-iframe {
+            width: 90%;
+            height: 90%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: var(--text-primary);
+            margin-top: 0.8rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            background: var(--success);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            display: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .call-header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(90deg, var(--dark-bg), var(--card-bg));
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+            height: 60px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo i {
+            margin-right: 0.5rem;
+        }
+
+        .call-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .call-title, .user-info, .call-timer {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .call-title i, .user-info i, .call-timer i {
+            margin-left: 0.3rem;
+        }
+
+        .top-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            transition: var(--transition);
+        }
+
+        .menu-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 60px;
+            left: -250px;
+            width: 250px;
+            height: calc(100vh - 60px);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            transition: var(--transition);
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .menu-items {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-items li {
+            margin-bottom: 0.8rem;
+        }
+
+        .menu-items a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .menu-items a:hover {
+            background: var(--dark-bg);
+        }
+
+        .call-info-box {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .call-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .call-info-label {
+            color: var(--text-secondary);
+        }
+
+        .call-info-value {
+            color: var(--warning);
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-switch-label {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch-label::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+        }
+
+        .toggle-switch input[type="checkbox"]:checked + .toggle-switch-label {
+            background: var(--primary-color);
+        }
+
+        .toggle-switch input[type="checkbox"]:checked + .toggle-switch-label::after {
+            left: calc(100% - 18px);
+        }
+
+        .toggle-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .password-field {
+            padding-left: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
             }
-            #vdoFrame {
-                width: 100vw;
-                min-width: 100vw;
-                max-width: 100vw;
-                aspect-ratio: 6/19;
-                min-height: 180px;
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                background: #000;
-                display: block;
+            .login-card {
+                max-width: 90%;
             }
-            body {
-                padding: 0 !important;
+            .call-header {
+                padding: 0.3rem 0.5rem;
             }
-            .container {
-                padding: 0.5rem !important;
-                border-radius: 0;
+            .call-info {
+                gap: 0.5rem;
             }
-            h1 {
-                font-size: 1.4rem;
+            .call-title, .user-info, .call-timer {
+                font-size: 0.75rem;
             }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div id="overlay" class="overlay"><span class="zoom-text">RemoteVM</span></div>
-    <div id="appContainer" class="container mx-auto p-6 max-w-2xl w-full">
-        <header class="flex justify-between items-center mb-8">
-            <h1 id="mainTitle" class="text-3xl font-bold">استودیو کنفرانس</h1>
-            <span id="statusIndicator" class="status-indicator status-inactive"></span>
-        </header>
-        <main>
-            <section id="roomCreationSection">
-                <div class="space-y-6">
-                    <div>
-                        <label for="roomNameInput" class="block font-medium mb-2">نام اتاق (فقط حروف انگلیسی)</label>
-                        <input type="text" id="roomNameInput" class="w-full" placeholder="مثال: my-awesome-webinar">
-                        <p id="roomNameError" class="error-message"></p>
-                    </div>
-                    <div>
-                        <label for="roomPasswordInput" class="block font-medium mb-2">رمز عبور اتاق (فقط حروف انگلیسی)</label>
-                        <input type="password" id="roomPasswordInput" class="w-full" placeholder="اختیاری">
-                        <p id="roomPasswordError" class="error-message"></p>
-                    </div>
-                    <details class="p-4 rounded-lg border border-dashed border-purple-500/50">
-                        <summary class="font-bold text-lg cursor-pointer">تنظیمات پیشرفته</summary>
-                        <div class="mt-4 space-y-4 pt-4 border-t border-purple-500/30">
-                            <div class="flex items-center justify-between">
-                                <span class="tooltip" data-tooltip="کیفیت صدای بهتر">صدای حرفه‌ای</span>
-                                <label class="toggle-switch"><input type="checkbox" id="proaudio-toggle"><span class="slider"></span></label>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="tooltip" data-tooltip="ایجاد لینک برای نمایش پیام‌ها">ارسال پیام</span>
-                                <label class="toggle-switch"><input type="checkbox" id="broadcast-toggle"><span class="slider"></span></label>
-                            </div>
-                        </div>
-                    </details>
-                    <button id="createRoomBtn" class="btn btn-primary w-full py-3 text-lg">
-                        <span class="border-line-blue"></span><span class="border-line-blue"></span><span class="border-line-blue"></span><span class="border-line-blue"></span>
-                        ایجاد و ورود به پنل مدیریت
-                    </button>
-                </div>
-            </section>
-            <section id="inCallSection" class="hidden">
-                <div class="space-y-6">
-                    <div class="p-4 rounded-lg border border-dashed border-cyan-500/50 space-y-4 text-right">
-                        <div>
-                            <label class="block font-medium text-cyan-300">لینک دعوت برای شرکت‌کنندگان:</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="guestLinkInput" class="w-full" readonly>
-                                <button id="copyGuestLinkBtn" class="btn p-3">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M8 2a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2V6l-3-3H8z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="broadcastContainer" class="hidden">
-                            <label class="block font-medium text-cyan-300">لینک نمایش پیام‌ها (برای OBS):</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="broadcastLinkInput" class="w-full" readonly>
-                                <button id="copyBroadcastLinkBtn" class="btn p-3">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M8 2a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2V6l-3-3H8z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <p id="copyMessage" class="text-sm text-green-400 h-5 text-center" role="alert"></p>
-                    <div id="iframe-container" class="w-full">
-                        <iframe id="vdoFrame" allow="camera; microphone; autoplay; display-capture; fullscreen"></iframe>
-                    </div>
-                    <button id="endCallBtn" class="btn w-full py-3 text-lg bg-red-700">خروج و ساخت اتاق جدید</button>
-                </div>
-            </section>
-        </main>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">در حال ایجاد تماس و اتصال به سرور RemoteVM...</div>
     </div>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Elements ---
-    const elements = {
-        appContainer: document.getElementById('appContainer'),
-        roomCreationSection: document.getElementById('roomCreationSection'),
-        inCallSection: document.getElementById('inCallSection'),
-        createRoomBtn: document.getElementById('createRoomBtn'),
-        endCallBtn: document.getElementById('endCallBtn'),
-        roomNameInput: document.getElementById('roomNameInput'),
-        roomPasswordInput: document.getElementById('roomPasswordInput'),
-        roomNameError: document.getElementById('roomNameError'),
-        roomPasswordError: document.getElementById('roomPasswordError'),
-        guestLinkInput: document.getElementById('guestLinkInput'),
-        copyGuestLinkBtn: document.getElementById('copyGuestLinkBtn'),
-        broadcastContainer: document.getElementById('broadcastContainer'),
-        broadcastLinkInput: document.getElementById('broadcastLinkInput'),
-        copyBroadcastLinkBtn: document.getElementById('copyBroadcastLinkBtn'),
-        proaudioToggle: document.getElementById('proaudio-toggle'),
-        broadcastToggle: document.getElementById('broadcast-toggle'),
-        vdoFrame: document.getElementById('vdoFrame'),
-        mainTitle: document.getElementById('mainTitle'),
-        statusIndicator: document.getElementById('statusIndicator'),
-        copyMessage: document.getElementById('copyMessage'),
-        overlay: document.getElementById('overlay'),
-    };
 
-    // --- Helper Functions ---
-    const generateId = (length = 6) => Math.random().toString(36).substring(2, length + 2);
-    const showCopyMessage = (message) => {
-        elements.copyMessage.textContent = message;
-        setTimeout(() => { elements.copyMessage.textContent = ''; }, 3000);
-    };
-    const updateStatus = (isActive) => {
-        elements.statusIndicator.classList.toggle('status-active', isActive);
-        elements.roomCreationSection.classList.toggle('hidden', isActive);
-        elements.inCallSection.classList.toggle('hidden', !isActive);
-        if(isActive) {
-            elements.appContainer.classList.add('max-w-7xl');
-            elements.appContainer.classList.remove('max-w-2xl');
-        } else {
-            elements.appContainer.classList.remove('max-w-7xl');
-            elements.appContainer.classList.add('max-w-2xl');
+    <header class="call-header" id="callHeader">
+        <button class="menu-btn" onclick="toggleSideMenu()" aria-label="باز کردن منو"><i class="fas fa-bars"></i></button>
+        <div class="header-logo">
+            <i class="fas fa-video"></i> RemoteVM
+        </div>
+        <div class="call-info" id="callInfo">
+            <div class="call-title"><i class="fas fa-video"></i><span id="callNameDisplay">تماس تصویری</span></div>
+            <div class="user-info" id="userInfoDisplay"><i class="fas fa-user"></i><span id="userNameDisplay">کاربر</span></div>
+            <div class="call-timer"><i class="fas fa-clock"></i><span id="callTimer">00:00:00</span></div>
+        </div>
+        <div class="top-controls">
+            <button class="btn btn-danger" id="leaveCallBtn" onclick="leaveCall()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="call-info-box" id="callInfoBox">
+            <div class="call-info-item">
+                <span class="call-info-label">شناسه اتاق:</span>
+                <span class="call-info-value" id="menuRoomId"></span>
+            </div>
+            <div class="call-info-item" id="menuPasswordSection">
+                <span class="call-info-label">رمز عبور:</span>
+                <span class="call-info-value" id="menuRoomPassword"></span>
+            </div>
+            <div class="call-info-item">
+                <span class="call-info-label">لینک تماس:</span>
+                <button class="copy-btn" id="copyRoomLinkBtn" onclick="copyRoomLink()"><i class="fas fa-copy"></i> کپی لینک</button>
+            </div>
+        </div>
+        <ul class="menu-items">
+            <li><a href="/" target="_blank" rel="noopener noreferrer" aria-label="صفحه اصلی"><i class="fas fa-home"></i> خانه</a></li>
+            <li><a href="./help.html" target="_blank" rel="noopener noreferrer" aria-label="راهنما"><i class="fas fa-question-circle"></i> راهنما</a></li>
+            <li><a href="https://seccam.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i> Security Cam</a></li>
+            <li><a href="https://classroom.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-chalkboard-teacher"></i> ClassRoom</a></li>
+            <li><a href="https://webcam.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-mobile-alt"></i> Phone to Webcam</a></li>              
+            <li><a href="https://remotevm.ir/product" target="_blank" rel="noopener noreferrer"><i class="fas fa-box-open"></i> محصولات</a></li>
+        </ul>
+    </div>
+
+    <main class="login-container" id="loginScreen">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo"><i class="fas fa-video"></i></div>
+                <h1 class="login-title">تماس تصویری RemoteVM</h1>
+                <p class="login-subtitle">پلتفرم تماس تصویری دوطرفه حرفه‌ای</p>
+            </div>
+
+            <section id="actionSelection">
+                <div class="action-buttons">
+                    <div class="action-btn" onclick="selectAction('create')" tabindex="0" role="button" aria-label="ایجاد تماس جدید">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>ایجاد تماس جدید</h3>
+                        <p>یک اتاق تماس جدید ایجاد کنید</p>
+                    </div>
+                    <div class="action-btn" onclick="selectAction('join')" tabindex="0" role="button" aria-label="پیوستن به تماس">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <h3>پیوستن به تماس</h3>
+                        <p>با شناسه و رمز تماس به اتاق بپیوندید</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section" id="createCallForm">
+                <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-plus-circle"></i> ایجاد تماس جدید</h2>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion('previousCreateRooms')">
+                        <span>ورودهای قبلی</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content" id="previousCreateRooms"></div>
+                </div>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label" for="userName">نام شما <span style="color: var(--danger);">*</span></label>
+                        <input type="text" class="form-input" id="userName" placeholder="مثال: AliAhmadi" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="userNameError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="roomId">شناسه اتاق <span style="color: var(--danger);">*</span></label>
+                        <input type="text" class="form-input" id="roomId" placeholder="مثال: call1234" oninput="restrictInput(this)" pattern="[a-zA-Z0-9]+" maxlength="20" required aria-required="true">
+                        <span class="error-message" id="roomIdError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="roomPassword">رمز عبور اتاق (اختیاری)</label>
+                        <div class="password-container">
+                            <input type="password" class="form-input password-field" id="roomPassword" placeholder="رمز عبور امن وارد کنید" pattern="[a-zA-Z0-9]*" oninput="restrictInput(this)">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('roomPassword', 'passwordToggleCreate')">
+                                <i class="fas fa-eye" id="passwordToggleCreate"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="roomPasswordError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="miniPreviewCreate" name="miniPreviewCreate">
+                            <label class="toggle-switch-label" for="miniPreviewCreate"></label>
+                            <span class="toggle-text">Mini self-preview</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="createCall()">
+                            <i class="fas fa-plus-circle"></i> ایجاد و ورود
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="backToActionSelection()">
+                            <i class="fas fa-arrow-right"></i> بازگشت
+                        </button>
+                    </div>
+                </form>
+                <div id="successMessage" style="display: none;">
+                    <div class="success-section">
+                        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3 class="success-title">اتاق تماس با موفقیت ایجاد شد!</h3>
+                        <div class="info-box">
+                            <div class="info-item">
+                                <span class="info-label">شناسه اتاق:</span>
+                                <span class="info-value" id="roomIdDisplay"></span>
+                                <button class="copy-btn" onclick="copyText('roomIdDisplay')"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <div class="info-item" id="passwordDisplaySection">
+                                <span class="info-label">رمز عبور:</span>
+                                <span class="info-value" id="roomPassDisplay"></span>
+                                <button class="copy-btn" onclick="copyText('roomPassDisplay')"><i class="fas fa-copy"></i></button>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">لینک تماس:</span>
+                                <span class="info-value" id="roomLinkDisplay"></span>
+                                <button class="copy-btn" onclick="copyText('roomLinkDisplay')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <p style="text-align: center; color: white;">این اطلاعات را با طرف مقابل به اشتراک بگذارید</p>
+                        <button class="btn btn-success" onclick="enterCall()">
+                            <i class="fas fa-sign-in-alt"></i> ورود به تماس
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section" id="joinCallForm">
+                <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-sign-in-alt"></i> پیوستن به تماس</h2>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion('previousJoinRooms')">
+                        <span>ورودهای قبلی</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content" id="previousJoinRooms"></div>
+                </div>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label" for="joinUserName">نام شما <span style="color: var(--danger);">*</span></label>
+                        <input type="text" class="form-input" id="joinUserName" placeholder="مثال: AliHosseini" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="joinUserNameError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="joinRoomId">شناسه اتاق <span style="color: var(--danger);">*</span></label>
+                        <input type="text" class="form-input" id="joinRoomId" placeholder="شناسه دریافت‌شده" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="joinRoomIdError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="joinRoomPassword">رمز عبور اتاق (در صورت وجود)</label>
+                        <div class="password-container">
+                            <input type="password" class="form-input password-field" id="joinRoomPassword" placeholder="رمز عبور دریافت‌شده" pattern="[a-zA-Z0-9]*" oninput="restrictInput(this)">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('joinRoomPassword', 'passwordToggleJoin')">
+                                <i class="fas fa-eye" id="passwordToggleJoin"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="joinRoomPasswordError">فقط حروف انگلیسی و اعداد مجاز است</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="miniPreviewJoin" name="miniPreviewJoin">
+                            <label class="toggle-switch-label" for="miniPreviewJoin"></label>
+                            <span class="toggle-text">Mini self-preview</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="joinCall()">
+                            <i class="fas fa-sign-in-alt"></i> ورود به تماس
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="backToActionSelection()">
+                            <i class="fas fa-arrow-right"></i> بازگشت
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <div class="call-container" id="callContainer">
+        <div class="video-section">
+            <div class="video-container" id="videoContainer">
+                <iframe class="video-iframe" id="mainVideoFrame" allow="camera; microphone; display-capture; fullscreen" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">عملیات با موفقیت انجام شد</span>
+    </div>
+
+    <script>
+        'use strict';
+
+        const SERVER_URL = 'https://server.remotevm.ir';
+        let callInfo = {};
+        let userInfo = {};
+        let localStream = null;
+        let callStartTime = null;
+        let timerInterval = null;
+        const MAX_ROOMS = 10;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStoredData();
+            initializeEventListeners();
+            populatePreviousRooms();
+            resetUI();
+        });
+
+        function initializeEventListeners() {
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+            window.addEventListener('beforeunload', handleBeforeUnload);
         }
-        setTimeout(() => {
-            if (elements.vdoFrame) {
-                elements.vdoFrame.style.width = "100%";
-                elements.vdoFrame.style.height = "100%";
+
+        async function checkMediaAccess() {
+            try {
+                // Ensure previous stream is stopped
+                if (localStream) {
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
+                    localStream = null;
+                }
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                return { success: true, stream };
+            } catch (error) {
+                console.error('Media access error:', error);
+                showToast('دسترسی به دوربین یا میکروفون وجود ندارد. لطفاً مجوزها را بررسی کنید.', 'error');
+                return { success: false, stream: null };
             }
-        }, 300);
-    };
-    const copyToClipboard = (inputElement, successMessage) => {
-        navigator.clipboard.writeText(inputElement.value)
-            .then(() => showCopyMessage(successMessage))
-            .catch(() => alert('خطا در کپی کردن لینک.'));
-    };
-
-    // --- *** NEW: Input Validation Logic *** ---
-    const validateInput = (event) => {
-        const inputElement = event.target;
-        const errorElement = document.getElementById(`${inputElement.id}Error`);
-        const regex = /^[a-zA-Z0-9-_]*$/; // Allow letters, numbers, hyphen, underscore
-
-        if (!regex.test(inputElement.value)) {
-            inputElement.value = inputElement.value.replace(/[^a-zA-Z0-9-_]/g, '');
-            errorElement.textContent = 'فقط حروف انگلیسی، اعداد، خط تیره و زیرخط مجاز است.';
-            inputElement.classList.add('input-error');
-            setTimeout(() => {
-                errorElement.textContent = '';
-                inputElement.classList.remove('input-error');
-            }, 3000);
-        } else {
-            errorElement.textContent = '';
-            inputElement.classList.remove('input-error');
-        }
-    };
-
-    // --- Core Logic ---
-    const createRoom = () => {
-        const roomName = elements.roomNameInput.value.trim().replace(/\s+/g, '-') || `Room-${generateId()}`;
-        const roomPassword = elements.roomPasswordInput.value.trim();
-        const directorViewPassword = generateId(16);
-        const baseURL = "https://live.remotevm.ir/";
-        const stunServer = "stun:stun.l.google.com:19302";
-        const baseParams = { stun: stunServer };
-        if (elements.proaudioToggle.checked) baseParams.proaudio = '';
-        
-        const directorParams = new URLSearchParams({ ...baseParams, director: roomName, proxy: '' });
-        if (roomPassword) directorParams.append('password', roomPassword);
-        
-        const guestParams = new URLSearchParams({ ...baseParams, room: roomName, autoview: '' });
-        if (roomPassword) guestParams.append('password', roomPassword);
-        elements.guestLinkInput.value = `${baseURL}?${guestParams.toString()}`;
-        
-        if (elements.broadcastToggle.checked) {
-            const broadcastParams = new URLSearchParams({ ...baseParams, view: roomName, password: directorViewPassword });
-            elements.broadcastLinkInput.value = `${baseURL}?${broadcastParams.toString()}`;
-            directorParams.append('broadcast', directorViewPassword);
-            elements.broadcastContainer.classList.remove('hidden');
-        } else {
-            elements.broadcastContainer.classList.add('hidden');
         }
 
-        elements.vdoFrame.src = `${baseURL}?${directorParams.toString()}`;
-        elements.mainTitle.textContent = `پنل مدیریت: ${roomName}`;
-        updateStatus(true);
-    };
-
-    // --- Event Listeners & Initial Load ---
-    elements.roomNameInput.addEventListener('input', validateInput);
-    elements.roomPasswordInput.addEventListener('input', validateInput);
-    elements.createRoomBtn.addEventListener('click', createRoom);
-    elements.endCallBtn.addEventListener('click', () => {
-        elements.vdoFrame.src = 'about:blank';
-        updateStatus(false);
-    });
-    elements.copyGuestLinkBtn.addEventListener('click', () => copyToClipboard(elements.guestLinkInput, 'لینک شرکت‌کنندگان کپی شد!'));
-    elements.copyBroadcastLinkBtn.addEventListener('click', () => copyToClipboard(elements.broadcastLinkInput, 'لینک نمایش پیام کپی شد!'));
-    setTimeout(() => { elements.overlay.classList.add('hidden'); }, 1200);
-
-    window.addEventListener('resize', () => {
-        if (elements.vdoFrame) {
-            elements.vdoFrame.style.width = "100%";
-            elements.vdoFrame.style.height = "100%";
+        async function checkServerAvailability() {
+            try {
+                const response = await fetch(SERVER_URL, { method: 'HEAD', mode: 'cors' });
+                return response.ok;
+            } catch (error) {
+                console.error('Server availability check failed:', error);
+                return false;
+            }
         }
-    });
-});
-</script>
+
+        function resetUI() {
+            try {
+                const callHeader = document.getElementById('callHeader');
+                const callInfo = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const actionSelection = document.getElementById('actionSelection');
+                const successMessage = document.getElementById('successMessage');
+                const formSections = document.querySelectorAll('.form-section');
+
+                if (!callHeader || !callInfo || !leaveCallBtn || !copyRoomLinkBtn || !loginScreen || !callContainer || !actionSelection || !successMessage) {
+                    console.error('Required DOM elements not found in resetUI');
+                    return;
+                }
+
+                callHeader.style.display = 'flex';
+                callInfo.style.display = 'none';
+                leaveCallBtn.classList.remove('active');
+                copyRoomLinkBtn.style.display = 'none';
+                loginScreen.style.display = 'flex';
+                callContainer.classList.remove('active');
+                actionSelection.style.display = 'block';
+                successMessage.style.display = 'none';
+                formSections.forEach(section => section.classList.remove('active'));
+
+                // Reset form inputs
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.value = '';
+                    input.classList.remove('error');
+                    const errorMessage = document.getElementById(`${input.id}Error`);
+                    if (errorMessage) errorMessage.classList.remove('active');
+                });
+
+                // Reset timer display
+                const callTimer = document.getElementById('callTimer');
+                if (callTimer) callTimer.textContent = '00:00:00';
+
+                // Reset iframe
+                resetVideoFrame();
+            } catch (error) {
+                console.error('Error in resetUI:', error);
+                showToast('خطا در بازنشانی رابط کاربری', 'error');
+            }
+        }
+
+        function loadStoredData() {
+            try {
+                const storedCallInfo = localStorage.getItem('callInfo');
+                const storedUserInfo = localStorage.getItem('userInfo');
+                const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                if (storedCallInfo && storedUserInfo) {
+                    callInfo = JSON.parse(storedCallInfo);
+                    userInfo = JSON.parse(storedUserInfo);
+                    const userNameInput = document.getElementById('userName');
+                    const roomIdInput = document.getElementById('roomId');
+                    const roomPasswordInput = document.getElementById('roomPassword');
+                    const joinUserNameInput = document.getElementById('joinUserName');
+                    const joinRoomIdInput = document.getElementById('joinRoomId');
+                    const joinRoomPasswordInput = document.getElementById('joinRoomPassword');
+                    const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                    const miniPreviewJoin = document.getElementById('miniPreviewJoin');
+
+                    if (userNameInput) userNameInput.value = userInfo.name || '';
+                    if (roomIdInput) roomIdInput.value = callInfo.roomId || '';
+                    if (roomPasswordInput) roomPasswordInput.value = callInfo.password || '';
+                    if (joinUserNameInput) joinUserNameInput.value = userInfo.name || '';
+                    if (joinRoomIdInput) joinRoomIdInput.value = callInfo.roomId || '';
+                    if (joinRoomPasswordInput) joinRoomPasswordInput.value = callInfo.password || '';
+                    if (miniPreviewCreate) miniPreviewCreate.checked = callInfo.miniPreview || false;
+                    if (miniPreviewJoin) miniPreviewJoin.checked = callInfo.miniPreview || false;
+                }
+                localStorage.setItem('previousRooms', JSON.stringify(storedRooms.slice(0, MAX_ROOMS)));
+                populatePreviousRooms();
+            } catch (error) {
+                console.error('Error in loadStoredData:', error);
+                showToast('خطا در بارگذاری داده‌های ذخیره‌شده', 'error');
+            }
+        }
+
+        function saveToLocalStorage() {
+            try {
+                const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                const miniPreviewJoin = document.getElementById('miniPreviewJoin');
+                callInfo.miniPreview = (miniPreviewCreate && miniPreviewCreate.checked) || (miniPreviewJoin && miniPreviewJoin.checked) || false;
+                localStorage.setItem('callInfo', JSON.stringify(callInfo));
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                let storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                const roomData = { roomId: callInfo.roomId, password: callInfo.password, name: userInfo.name, timestamp: Date.now() };
+                const existingIndex = storedRooms.findIndex(r => r.roomId === callInfo.roomId);
+                if (existingIndex > -1) storedRooms.splice(existingIndex, 1);
+                storedRooms.unshift(roomData);
+                if (storedRooms.length > MAX_ROOMS) storedRooms.pop();
+                localStorage.setItem('previousRooms', JSON.stringify(storedRooms));
+                populatePreviousRooms();
+            } catch (error) {
+                console.error('Error in saveToLocalStorage:', error);
+                showToast('خطا در ذخیره‌سازی داده‌ها', 'error');
+            }
+        }
+
+        function populatePreviousRooms() {
+            try {
+                const createContainer = document.getElementById('previousCreateRooms');
+                const joinContainer = document.getElementById('previousJoinRooms');
+                if (!createContainer || !joinContainer) {
+                    console.error('Previous rooms containers not found');
+                    return;
+                }
+                createContainer.innerHTML = '';
+                joinContainer.innerHTML = '';
+                const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                storedRooms.forEach(room => {
+                    if (!room.roomId || !room.name) return; // Skip invalid entries
+                    const createDiv = document.createElement('div');
+                    createDiv.className = 'previous-room';
+                    createDiv.textContent = `${room.roomId} (ساخته‌شده توسط ${room.name})`;
+                    createDiv.onclick = () => {
+                        const userNameInput = document.getElementById('userName');
+                        const roomIdInput = document.getElementById('roomId');
+                        const roomPasswordInput = document.getElementById('roomPassword');
+                        if (userNameInput) userNameInput.value = room.name || '';
+                        if (roomIdInput) roomIdInput.value = room.roomId || '';
+                        if (roomPasswordInput) roomPasswordInput.value = room.password || '';
+                    };
+                    createContainer.appendChild(createDiv);
+
+                    const joinDiv = document.createElement('div');
+                    joinDiv.className = 'previous-room';
+                    joinDiv.textContent = `${room.roomId} (کاربر: ${room.name})`;
+                    joinDiv.onclick = () => {
+                        const joinUserNameInput = document.getElementById('joinUserName');
+                        const joinRoomIdInput = document.getElementById('joinRoomId');
+                        const joinRoomPasswordInput = document.getElementById('joinRoomPassword');
+                        if (joinUserNameInput) joinUserNameInput.value = room.name || '';
+                        if (joinRoomIdInput) joinRoomIdInput.value = room.roomId || '';
+                        if (joinRoomPasswordInput) joinRoomPasswordInput.value = room.password || '';
+                    };
+                    joinContainer.appendChild(joinDiv);
+                });
+            } catch (error) {
+                console.error('Error in populatePreviousRooms:', error);
+                showToast('خطا در بارگذاری اتاق‌های قبلی', 'error');
+            }
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const header = content && content.previousElementSibling;
+            if (content && header) {
+                content.classList.toggle('active');
+                header.classList.toggle('active');
+            } else {
+                console.error(`Accordion element not found: ${id}`);
+            }
+        }
+
+        function togglePasswordVisibility(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            if (input && toggle) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    toggle.classList.remove('fa-eye');
+                    toggle.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    toggle.classList.remove('fa-eye-slash');
+                    toggle.classList.add('fa-eye');
+                }
+            } else {
+                console.error(`Password input or toggle not found: ${inputId}, ${toggleId}`);
+            }
+        }
+
+        function restrictInput(input) {
+            if (!input) return;
+            const value = input.value;
+            const regex = /^[a-zA-Z0-9]*$/;
+            const errorMessage = document.getElementById(`${input.id}Error`);
+            if (!regex.test(value)) {
+                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
+                if (errorMessage) {
+                    errorMessage.classList.add('active');
+                    setTimeout(() => errorMessage.classList.remove('active'), 3000);
+                }
+            } else {
+                if (errorMessage) errorMessage.classList.remove('active');
+            }
+        }
+
+        function selectAction(action) {
+            try {
+                const actionSelection = document.getElementById('actionSelection');
+                const createCallForm = document.getElementById('createCallForm');
+                if (!actionSelection || !createCallForm) {
+                    console.error('Action selection or create call form not found');
+                    return;
+                }
+                actionSelection.style.display = 'none';
+                if (action === 'create') {
+                    createCallForm.classList.add('active');
+                    generateRoomId();
+                } else {
+                    const joinCallForm = document.getElementById('joinCallForm');
+                    if (joinCallForm) joinCallForm.classList.add('active');
+                }
+            } catch (error) {
+                console.error('Error in selectAction:', error);
+                showToast('خطا در انتخاب عملیات', 'error');
+            }
+        }
+
+        function generateRoomId() {
+            try {
+                const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                let roomId = 'call';
+                for (let i = 0; i < 8; i++) {
+                    roomId += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                const roomIdInput = document.getElementById('roomId');
+                if (roomIdInput) roomIdInput.value = roomId;
+            } catch (error) {
+                console.error('Error in generateRoomId:', error);
+                showToast('خطا در تولید شناسه اتاق', 'error');
+            }
+        }
+
+        function backToActionSelection() {
+            try {
+                const formSections = document.querySelectorAll('.form-section');
+                const successMessage = document.getElementById('successMessage');
+                const actionSelection = document.getElementById('actionSelection');
+                if (!formSections || !successMessage || !actionSelection) {
+                    console.error('Required DOM elements not found in backToActionSelection');
+                    return;
+                }
+                formSections.forEach(section => section.classList.remove('active'));
+                successMessage.style.display = 'none';
+                actionSelection.style.display = 'block';
+                // Clear form inputs
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.value = '';
+                    input.classList.remove('error');
+                    const errorMessage = document.getElementById(`${input.id}Error`);
+                    if (errorMessage) errorMessage.classList.remove('active');
+                });
+            } catch (error) {
+                console.error('Error in backToActionSelection:', error);
+                showToast('خطا در بازگشت به انتخاب عملیات', 'error');
+            }
+        }
+
+        async function createCall() {
+            try {
+                const userNameInput = document.getElementById('userName');
+                const roomIdInput = document.getElementById('roomId');
+                const roomPasswordInput = document.getElementById('roomPassword');
+                const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                const roomIdDisplay = document.getElementById('roomIdDisplay');
+                const roomPassDisplay = document.getElementById('roomPassDisplay');
+                const roomLinkDisplay = document.getElementById('roomLinkDisplay');
+                const passwordDisplaySection = document.getElementById('passwordDisplaySection');
+                const successMessage = document.getElementById('successMessage');
+
+                if (!userNameInput || !roomIdInput || !roomIdDisplay || !roomPassDisplay || !roomLinkDisplay || !passwordDisplaySection || !successMessage) {
+                    showToast('خطا در رابط کاربری. لطفاً صفحه را رفرش کنید.', 'error');
+                    console.error('Required DOM elements not found in createCall');
+                    return;
+                }
+
+                const userName = userNameInput.value.trim();
+                const roomId = roomIdInput.value.trim();
+                const password = roomPasswordInput ? roomPasswordInput.value.trim() : '';
+                const miniPreview = miniPreviewCreate ? miniPreviewCreate.checked : false;
+
+                if (!userName || !roomId) {
+                    showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+                    return;
+                }
+
+                const regex = /^[a-zA-Z0-9]+$/;
+                if (!regex.test(userName)) {
+                    userNameInput.classList.add('error');
+                    document.getElementById('userNameError').classList.add('active');
+                    return;
+                }
+                if (!regex.test(roomId)) {
+                    roomIdInput.classList.add('error');
+                    document.getElementById('roomIdError').classList.add('active');
+                    return;
+                }
+                if (password && !regex.test(password)) {
+                    roomPasswordInput.classList.add('error');
+                    document.getElementById('roomPasswordError').classList.add('active');
+                    return;
+                }
+
+                if (!/^[a-zA-Z0-9]{6,}$/.test(roomId)) {
+                    showToast('شناسه اتاق باید حداقل ۶ کاراکتر و فقط شامل حروف انگلیسی و اعداد باشد', 'error');
+                    return;
+                }
+
+                callInfo = { roomId, password, miniPreview };
+                userInfo = { name: userName };
+                saveToLocalStorage();
+
+                const linkParams = [`proxy`, `room=${roomId}`, `host`];
+                if (password) linkParams.push(`p=${password}`);
+                if (miniPreview) linkParams.push(`minipreview`);
+                const link = `${SERVER_URL}/?${linkParams.join('&')}`;
+                
+                roomIdDisplay.textContent = roomId;
+                roomPassDisplay.textContent = password || 'بدون رمز';
+                roomLinkDisplay.textContent = link;
+                passwordDisplaySection.style.display = password ? 'flex' : 'none';
+                successMessage.style.display = 'block';
+
+                showToast('اتاق تماس با موفقیت ایجاد شد!', 'success');
+            } catch (error) {
+                console.error('Error in createCall:', error);
+                showToast('خطا در ایجاد تماس. لطفاً دوباره تلاش کنید.', 'error');
+            }
+        }
+
+        async function enterCall() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (!loadingOverlay) {
+                console.error('Loading overlay not found');
+                return;
+            }
+            loadingOverlay.classList.add('active');
+
+            try {
+                if (!callInfo.roomId || !userInfo.name) {
+                    throw new Error('Missing call or user information');
+                }
+
+                const serverAvailable = await checkServerAvailability();
+                if (!serverAvailable) {
+                    throw new Error('Server is not available');
+                }
+
+                const { success, stream } = await checkMediaAccess();
+                if (!success) throw new Error('Media access failed');
+
+                localStream = stream;
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const callInfoElement = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const callNameDisplay = document.getElementById('callNameDisplay');
+                const userNameDisplay = document.getElementById('userNameDisplay');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
+
+                if (!loginScreen || !callContainer || !callInfoElement || !leaveCallBtn || !copyRoomLinkBtn || !callNameDisplay || !userNameDisplay || !userInfoDisplay) {
+                    throw new Error('Required DOM elements not found');
+                }
+
+                loginScreen.style.display = 'none';
+                callContainer.classList.add('active');
+                callInfoElement.style.display = 'flex';
+                leaveCallBtn.classList.add('active');
+                copyRoomLinkBtn.style.display = 'inline-block';
+
+                callNameDisplay.textContent = `اتاق ${callInfo.roomId}`;
+                userNameDisplay.textContent = userInfo.name;
+                userInfoDisplay.innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
+                updateSideMenu();
+
+                resetVideoFrame();
+                const linkParams = [`proxy`, `room=${callInfo.roomId}`, `host`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
+                const iframe = document.getElementById('mainVideoFrame');
+                if (!iframe) throw new Error('Video iframe not found');
+                iframe.src = callUrl;
+
+                iframe.onload = () => {
+                    loadingOverlay.classList.remove('active');
+                    startCallTimer();
+                    showToast('به تماس خوش آمدید!', 'success');
+                };
+                iframe.onerror = () => {
+                    throw new Error('Failed to load call iframe');
+                };
+            } catch (error) {
+                console.error('Error in enterCall:', error);
+                loadingOverlay.classList.remove('active');
+                showToast('خطا در اتصال به تماس. لطفاً سرور یا اطلاعات را بررسی کنید.', 'error');
+                if (localStream) {
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
+                    localStream = null;
+                }
+                resetUI();
+            }
+        }
+
+        async function joinCall() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (!loadingOverlay) {
+                console.error('Loading overlay not found');
+                return;
+            }
+            loadingOverlay.classList.add('active');
+
+            try {
+                const userNameInput = document.getElementById('joinUserName');
+                const roomIdInput = document.getElementById('joinRoomId');
+                const roomPasswordInput = document.getElementById('joinRoomPassword');
+                if (!userNameInput || !roomIdInput) {
+                    throw new Error('Required input elements not found');
+                }
+
+                const userName = userNameInput.value.trim();
+                const roomId = roomIdInput.value.trim();
+                const password = roomPasswordInput ? roomPasswordInput.value.trim() : '';
+                const miniPreview = document.getElementById('miniPreviewJoin') ? document.getElementById('miniPreviewJoin').checked : false;
+
+                if (!userName || !roomId) {
+                    loadingOverlay.classList.remove('active');
+                    showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+                    return;
+                }
+
+                const regex = /^[a-zA-Z0-9]+$/;
+                if (!regex.test(userName)) {
+                    userNameInput.classList.add('error');
+                    document.getElementById('joinUserNameError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+                if (!regex.test(roomId)) {
+                    roomIdInput.classList.add('error');
+                    document.getElementById('joinRoomIdError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+                if (password && !regex.test(password)) {
+                    roomPasswordInput.classList.add('error');
+                    document.getElementById('joinRoomPasswordError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+
+                const serverAvailable = await checkServerAvailability();
+                if (!serverAvailable) {
+                    throw new Error('Server is not available');
+                }
+
+                const { success, stream } = await checkMediaAccess();
+                if (!success) throw new Error('Media access failed');
+
+                localStream = stream;
+                callInfo = { roomId, password, miniPreview };
+                userInfo = { name: userName };
+                saveToLocalStorage();
+
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const callInfoElement = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const callNameDisplay = document.getElementById('callNameDisplay');
+                const userNameDisplay = document.getElementById('userNameDisplay');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
+
+                if (!loginScreen || !callContainer || !callInfoElement || !leaveCallBtn || !copyRoomLinkBtn || !callNameDisplay || !userNameDisplay || !userInfoDisplay) {
+                    throw new Error('Required DOM elements not found');
+                }
+
+                loginScreen.style.display = 'none';
+                callContainer.classList.add('active');
+                callInfoElement.style.display = 'flex';
+                leaveCallBtn.classList.add('active');
+                copyRoomLinkBtn.style.display = 'inline-block';
+
+                callNameDisplay.textContent = `اتاق ${callInfo.roomId}`;
+                userNameDisplay.textContent = userInfo.name;
+                userInfoDisplay.innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
+                updateSideMenu();
+
+                resetVideoFrame();
+                const linkParams = [`room=${callInfo.roomId}`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
+                const iframe = document.getElementById('mainVideoFrame');
+                if (!iframe) throw new Error('Video iframe not found');
+                iframe.src = callUrl;
+
+                iframe.onload = () => {
+                    loadingOverlay.classList.remove('active');
+                    startCallTimer();
+                    showToast('به تماس خوش آمدید!', 'success');
+                };
+                iframe.onerror = () => {
+                    throw new Error('Failed to load call iframe');
+                };
+            } catch (error) {
+                console.error('Error in joinCall:', error);
+                loadingOverlay.classList.remove('active');
+                showToast('خطا در اتصال به تماس. لطفاً سرور یا اطلاعات را بررسی کنید.', 'error');
+                if (localStream) {
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
+                    localStream = null;
+                }
+                resetUI();
+            }
+        }
+
+        function resetVideoFrame() {
+            try {
+                const videoContainer = document.getElementById('videoContainer');
+                if (!videoContainer) {
+                    console.error('Video container not found');
+                    return;
+                }
+                const oldIframe = document.getElementById('mainVideoFrame');
+                if (oldIframe) {
+                    oldIframe.src = '';
+                    oldIframe.remove();
+                }
+                const newIframe = document.createElement('iframe');
+                newIframe.id = 'mainVideoFrame';
+                newIframe.className = 'video-iframe';
+                newIframe.setAttribute('allow', 'camera; microphone; display-capture; fullscreen');
+                newIframe.setAttribute('allowfullscreen', '');
+                videoContainer.appendChild(newIframe);
+            } catch (error) {
+                console.error('Error in resetVideoFrame:', error);
+                showToast('خطا در بازنشانی ویدئو', 'error');
+            }
+        }
+
+        function leaveCall() {
+            if (!document.getElementById('callContainer').classList.contains('active')) {
+                resetUI();
+                return;
+            }
+
+            if (confirm('آیا از خروج از تماس اطمینان دارید؟')) {
+                try {
+                    // Stop timer
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    callStartTime = null;
+
+                    // Stop media stream
+                    if (localStream) {
+                        localStream.getTracks().forEach(track => {
+                            track.stop();
+                            track.enabled = false;
+                        });
+                        localStream = null;
+                    }
+
+                    // Reset global variables
+                    callInfo = {};
+                    userInfo = {};
+
+                    // Reset UI
+                    resetUI();
+
+                    showToast('شما از تماس خارج شدید', 'success');
+                } catch (error) {
+                    console.error('Error in leaveCall:', error);
+                    showToast('خطا در خروج از تماس', 'error');
+                    resetUI();
+                }
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            if (toast && toastMessage) {
+                toastMessage.textContent = message;
+                toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--success)';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            } else {
+                console.error('Toast elements not found');
+            }
+        }
+
+        function handleKeyboardShortcuts(e) {
+            if (e.key === 'Escape' && document.getElementById('callContainer')?.classList.contains('active')) {
+                leaveCall();
+            }
+        }
+
+        function handleBeforeUnload(e) {
+            if (document.getElementById('callContainer')?.classList.contains('active')) {
+                e.preventDefault();
+                e.returnValue = 'آیا از خروج از تماس اطمینان دارید؟';
+            }
+        }
+
+        function toggleSideMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            if (sideMenu) sideMenu.classList.toggle('active');
+        }
+
+        function updateSideMenu() {
+            try {
+                const menuRoomId = document.getElementById('menuRoomId');
+                const menuRoomPassword = document.getElementById('menuRoomPassword');
+                const menuPasswordSection = document.getElementById('menuPasswordSection');
+                if (!menuRoomId || !menuRoomPassword || !menuPasswordSection) {
+                    console.error('Side menu elements not found');
+                    return;
+                }
+                menuRoomId.textContent = callInfo.roomId || '';
+                menuRoomPassword.textContent = callInfo.password || '';
+                menuPasswordSection.style.display = callInfo.password ? 'flex' : 'none';
+            } catch (error) {
+                console.error('Error in updateSideMenu:', error);
+                showToast('خطا در به‌روزرسانی منوی کناری', 'error');
+            }
+        }
+
+        function copyRoomLink() {
+            try {
+                const linkParams = [`room=${callInfo.roomId}`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const roomLink = `${SERVER_URL}/?${linkParams.join('&')}`;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(roomLink)
+                        .then(() => showToast('لینک تماس کپی شد!', 'success'))
+                        .catch(() => fallbackCopyText(roomLink));
+                } else {
+                    fallbackCopyText(roomLink);
+                }
+            } catch (error) {
+                console.error('Error in copyRoomLink:', error);
+                showToast('خطا در کپی لینک تماس', 'error');
+            }
+        }
+
+        function startCallTimer() {
+            try {
+                callStartTime = Date.now();
+                timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                    const hours = Math.floor(elapsed / 3600);
+                    const minutes = Math.floor((elapsed % 3600) / 60);
+                    const seconds = elapsed % 60;
+                    const callTimer = document.getElementById('callTimer');
+                    if (callTimer) {
+                        callTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error('Error in startCallTimer:', error);
+                showToast('خطا در راه‌اندازی تایمر تماس', 'error');
+            }
+        }
+
+        function copyText(elementId) {
+            try {
+                const textElement = document.getElementById(elementId);
+                if (!textElement) throw new Error(`Element ${elementId} not found`);
+                const text = textElement.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast('متن کپی شد!', 'success'))
+                        .catch(() => fallbackCopyText(text));
+                } else {
+                    fallbackCopyText(text);
+                }
+            } catch (error) {
+                console.error('Error in copyText:', error);
+                showToast('خطا در کپی متن', 'error');
+            }
+        }
+
+        function fallbackCopyText(text) {
+            try {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast('متن کپی شد!', 'success');
+            } catch (error) {
+                console.error('Error in fallbackCopyText:', error);
+                showToast('خطا در کپی متن', 'error');
+            }
+        }
+    </script>
 </body>
 </html>
