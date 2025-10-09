@@ -204,11 +204,59 @@
             border-color: var(--primary-color);
         }
 
-        .previous-rooms {
-            background: rgba(255, 255, 255, 0.1);
+        .form-input.error {
+            border-color: var(--danger);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .accordion {
+            margin-bottom: 1rem;
+        }
+
+        .accordion-header {
+            background: var(--dark-bg);
             padding: 0.8rem;
             border-radius: 6px;
-            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background: #2d3748;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.active {
             max-height: 150px;
             overflow-y: auto;
         }
@@ -583,6 +631,30 @@
             font-size: 0.9rem;
         }
 
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .password-field {
+            padding-left: 2.5rem;
+        }
+
         @media (max-width: 768px) {
             .action-buttons {
                 grid-template-columns: 1fr;
@@ -673,19 +745,33 @@
 
             <section class="form-section" id="createCallForm">
                 <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-plus-circle"></i> ایجاد تماس جدید</h2>
-                <div class="previous-rooms" id="previousCreateRooms"></div>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion('previousCreateRooms')">
+                        <span>ورودهای قبلی</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content" id="previousCreateRooms"></div>
+                </div>
                 <form onsubmit="return false;">
                     <div class="form-group">
                         <label class="form-label" for="userName">نام شما <span style="color: var(--danger);">*</span></label>
-                        <input type="text" class="form-input" id="userName" placeholder="مثال: علی احمدی" required aria-required="true">
+                        <input type="text" class="form-input" id="userName" placeholder="مثال: AliAhmadi" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="userNameError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="roomId">شناسه اتاق <span style="color: var(--danger);">*</span></label>
-                        <input type="text" class="form-input" id="roomId" placeholder="مثال: call1234" oninput="validateRoomId(this)" maxlength="20" pattern="[a-zA-Z0-9]+" required aria-required="true">
+                        <input type="text" class="form-input" id="roomId" placeholder="مثال: call1234" oninput="restrictInput(this)" pattern="[a-zA-Z0-9]+" maxlength="20" required aria-required="true">
+                        <span class="error-message" id="roomIdError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="roomPassword">رمز عبور اتاق (اختیاری)</label>
-                        <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور امن وارد کنید">
+                        <div class="password-container">
+                            <input type="password" class="form-input password-field" id="roomPassword" placeholder="رمز عبور امن وارد کنید" pattern="[a-zA-Z0-9]*" oninput="restrictInput(this)">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('roomPassword', 'passwordToggleCreate')">
+                                <i class="fas fa-eye" id="passwordToggleCreate"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="roomPasswordError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <div class="toggle-switch">
@@ -734,19 +820,33 @@
 
             <section class="form-section" id="joinCallForm">
                 <h2 style="margin-bottom: 1rem; color: var(--info); font-size: 1.2rem;"><i class="fas fa-sign-in-alt"></i> پیوستن به تماس</h2>
-                <div class="previous-rooms" id="previousJoinRooms"></div>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion('previousJoinRooms')">
+                        <span>ورودهای قبلی</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content" id="previousJoinRooms"></div>
+                </div>
                 <form onsubmit="return false;">
                     <div class="form-group">
                         <label class="form-label" for="joinUserName">نام شما <span style="color: var(--danger);">*</span></label>
-                        <input type="text" class="form-input" id="joinUserName" placeholder="مثال: علی حسینی" required aria-required="true">
+                        <input type="text" class="form-input" id="joinUserName" placeholder="مثال: AliHosseini" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="joinUserNameError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="joinRoomId">شناسه اتاق <span style="color: var(--danger);">*</span></label>
-                        <input type="text" class="form-input" id="joinRoomId" placeholder="شناسه دریافت‌شده" required aria-required="true">
+                        <input type="text" class="form-input" id="joinRoomId" placeholder="شناسه دریافت‌شده" pattern="[a-zA-Z0-9]+" oninput="restrictInput(this)" required aria-required="true">
+                        <span class="error-message" id="joinRoomIdError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="joinRoomPassword">رمز عبور اتاق (در صورت وجود)</label>
-                        <input type="password" class="form-input" id="joinRoomPassword" placeholder="رمز عبور دریافت‌شده">
+                        <div class="password-container">
+                            <input type="password" class="form-input password-field" id="joinRoomPassword" placeholder="رمز عبور دریافت‌شده" pattern="[a-zA-Z0-9]*" oninput="restrictInput(this)">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('joinRoomPassword', 'passwordToggleJoin')">
+                                <i class="fas fa-eye" id="passwordToggleJoin"></i>
+                            </button>
+                        </div>
+                        <span class="error-message" id="joinRoomPasswordError">فقط حروف انگلیسی و اعداد مجاز است</span>
                     </div>
                     <div class="form-group">
                         <div class="toggle-switch">
@@ -770,7 +870,7 @@
 
     <div class="call-container" id="callContainer">
         <div class="video-section">
-            <div class="video-container">
+            <div class="video-container" id="videoContainer">
                 <iframe class="video-iframe" id="mainVideoFrame" allow="camera; microphone; display-capture; fullscreen" allowfullscreen></iframe>
             </div>
         </div>
@@ -796,10 +896,7 @@
             loadStoredData();
             initializeEventListeners();
             populatePreviousRooms();
-            document.getElementById('callHeader').style.display = 'flex';
-            document.getElementById('callInfo').style.display = 'none';
-            document.getElementById('leaveCallBtn').classList.remove('active');
-            document.getElementById('copyRoomLinkBtn').style.display = 'none';
+            resetUI();
         });
 
         function initializeEventListeners() {
@@ -809,170 +906,412 @@
 
         async function checkMediaAccess() {
             try {
+                // Ensure previous stream is stopped
+                if (localStream) {
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
+                    localStream = null;
+                }
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 return { success: true, stream };
             } catch (error) {
+                console.error('Media access error:', error);
                 showToast('دسترسی به دوربین یا میکروفون وجود ندارد. لطفاً مجوزها را بررسی کنید.', 'error');
                 return { success: false, stream: null };
             }
         }
 
-        function loadStoredData() {
-            const storedCallInfo = localStorage.getItem('callInfo');
-            const storedUserInfo = localStorage.getItem('userInfo');
-            const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            if (storedCallInfo && storedUserInfo) {
-                callInfo = JSON.parse(storedCallInfo);
-                userInfo = JSON.parse(storedUserInfo);
-                document.getElementById('userName').value = userInfo.name || '';
-                document.getElementById('roomId').value = callInfo.roomId || '';
-                document.getElementById('roomPassword').value = callInfo.password || '';
-                document.getElementById('joinUserName').value = userInfo.name || '';
-                document.getElementById('joinRoomId').value = callInfo.roomId || '';
-                document.getElementById('joinRoomPassword').value = callInfo.password || '';
-                document.getElementById('miniPreviewCreate').checked = callInfo.miniPreview || false;
-                document.getElementById('miniPreviewJoin').checked = callInfo.miniPreview || false;
+        async function checkServerAvailability() {
+            try {
+                const response = await fetch(SERVER_URL, { method: 'HEAD', mode: 'cors' });
+                return response.ok;
+            } catch (error) {
+                console.error('Server availability check failed:', error);
+                return false;
             }
-            localStorage.setItem('previousRooms', JSON.stringify(storedRooms.slice(0, MAX_ROOMS)));
-            populatePreviousRooms();
+        }
+
+        function resetUI() {
+            try {
+                const callHeader = document.getElementById('callHeader');
+                const callInfo = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const actionSelection = document.getElementById('actionSelection');
+                const successMessage = document.getElementById('successMessage');
+                const formSections = document.querySelectorAll('.form-section');
+
+                if (!callHeader || !callInfo || !leaveCallBtn || !copyRoomLinkBtn || !loginScreen || !callContainer || !actionSelection || !successMessage) {
+                    console.error('Required DOM elements not found in resetUI');
+                    return;
+                }
+
+                callHeader.style.display = 'flex';
+                callInfo.style.display = 'none';
+                leaveCallBtn.classList.remove('active');
+                copyRoomLinkBtn.style.display = 'none';
+                loginScreen.style.display = 'flex';
+                callContainer.classList.remove('active');
+                actionSelection.style.display = 'block';
+                successMessage.style.display = 'none';
+                formSections.forEach(section => section.classList.remove('active'));
+
+                // Reset form inputs
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.value = '';
+                    input.classList.remove('error');
+                    const errorMessage = document.getElementById(`${input.id}Error`);
+                    if (errorMessage) errorMessage.classList.remove('active');
+                });
+
+                // Reset timer display
+                const callTimer = document.getElementById('callTimer');
+                if (callTimer) callTimer.textContent = '00:00:00';
+
+                // Reset iframe
+                resetVideoFrame();
+            } catch (error) {
+                console.error('Error in resetUI:', error);
+                showToast('خطا در بازنشانی رابط کاربری', 'error');
+            }
+        }
+
+        function loadStoredData() {
+            try {
+                const storedCallInfo = localStorage.getItem('callInfo');
+                const storedUserInfo = localStorage.getItem('userInfo');
+                const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                if (storedCallInfo && storedUserInfo) {
+                    callInfo = JSON.parse(storedCallInfo);
+                    userInfo = JSON.parse(storedUserInfo);
+                    const userNameInput = document.getElementById('userName');
+                    const roomIdInput = document.getElementById('roomId');
+                    const roomPasswordInput = document.getElementById('roomPassword');
+                    const joinUserNameInput = document.getElementById('joinUserName');
+                    const joinRoomIdInput = document.getElementById('joinRoomId');
+                    const joinRoomPasswordInput = document.getElementById('joinRoomPassword');
+                    const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                    const miniPreviewJoin = document.getElementById('miniPreviewJoin');
+
+                    if (userNameInput) userNameInput.value = userInfo.name || '';
+                    if (roomIdInput) roomIdInput.value = callInfo.roomId || '';
+                    if (roomPasswordInput) roomPasswordInput.value = callInfo.password || '';
+                    if (joinUserNameInput) joinUserNameInput.value = userInfo.name || '';
+                    if (joinRoomIdInput) joinRoomIdInput.value = callInfo.roomId || '';
+                    if (joinRoomPasswordInput) joinRoomPasswordInput.value = callInfo.password || '';
+                    if (miniPreviewCreate) miniPreviewCreate.checked = callInfo.miniPreview || false;
+                    if (miniPreviewJoin) miniPreviewJoin.checked = callInfo.miniPreview || false;
+                }
+                localStorage.setItem('previousRooms', JSON.stringify(storedRooms.slice(0, MAX_ROOMS)));
+                populatePreviousRooms();
+            } catch (error) {
+                console.error('Error in loadStoredData:', error);
+                showToast('خطا در بارگذاری داده‌های ذخیره‌شده', 'error');
+            }
         }
 
         function saveToLocalStorage() {
-            callInfo.miniPreview = document.getElementById('miniPreviewCreate').checked || document.getElementById('miniPreviewJoin').checked;
-            localStorage.setItem('callInfo', JSON.stringify(callInfo));
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
-            let storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            const roomData = { roomId: callInfo.roomId, password: callInfo.password, name: userInfo.name, timestamp: Date.now() };
-            const existingIndex = storedRooms.findIndex(r => r.roomId === callInfo.roomId);
-            if (existingIndex > -1) storedRooms.splice(existingIndex, 1);
-            storedRooms.unshift(roomData);
-            if (storedRooms.length > MAX_ROOMS) storedRooms.pop();
-            localStorage.setItem('previousRooms', JSON.stringify(storedRooms));
-            populatePreviousRooms();
+            try {
+                const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                const miniPreviewJoin = document.getElementById('miniPreviewJoin');
+                callInfo.miniPreview = (miniPreviewCreate && miniPreviewCreate.checked) || (miniPreviewJoin && miniPreviewJoin.checked) || false;
+                localStorage.setItem('callInfo', JSON.stringify(callInfo));
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                let storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                const roomData = { roomId: callInfo.roomId, password: callInfo.password, name: userInfo.name, timestamp: Date.now() };
+                const existingIndex = storedRooms.findIndex(r => r.roomId === callInfo.roomId);
+                if (existingIndex > -1) storedRooms.splice(existingIndex, 1);
+                storedRooms.unshift(roomData);
+                if (storedRooms.length > MAX_ROOMS) storedRooms.pop();
+                localStorage.setItem('previousRooms', JSON.stringify(storedRooms));
+                populatePreviousRooms();
+            } catch (error) {
+                console.error('Error in saveToLocalStorage:', error);
+                showToast('خطا در ذخیره‌سازی داده‌ها', 'error');
+            }
         }
 
         function populatePreviousRooms() {
-            const createContainer = document.getElementById('previousCreateRooms');
-            const joinContainer = document.getElementById('previousJoinRooms');
-            createContainer.innerHTML = '';
-            joinContainer.innerHTML = '';
-            const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
-            storedRooms.forEach(room => {
-                const createDiv = document.createElement('div');
-                createDiv.className = 'previous-room';
-                createDiv.textContent = `${room.roomId} (ساخته‌شده توسط ${room.name})`;
-                createDiv.onclick = () => {
-                    document.getElementById('userName').value = room.name;
-                    document.getElementById('roomId').value = room.roomId;
-                    document.getElementById('roomPassword').value = room.password || '';
-                };
-                createContainer.appendChild(createDiv);
+            try {
+                const createContainer = document.getElementById('previousCreateRooms');
+                const joinContainer = document.getElementById('previousJoinRooms');
+                if (!createContainer || !joinContainer) {
+                    console.error('Previous rooms containers not found');
+                    return;
+                }
+                createContainer.innerHTML = '';
+                joinContainer.innerHTML = '';
+                const storedRooms = JSON.parse(localStorage.getItem('previousRooms') || '[]');
+                storedRooms.forEach(room => {
+                    if (!room.roomId || !room.name) return; // Skip invalid entries
+                    const createDiv = document.createElement('div');
+                    createDiv.className = 'previous-room';
+                    createDiv.textContent = `${room.roomId} (ساخته‌شده توسط ${room.name})`;
+                    createDiv.onclick = () => {
+                        const userNameInput = document.getElementById('userName');
+                        const roomIdInput = document.getElementById('roomId');
+                        const roomPasswordInput = document.getElementById('roomPassword');
+                        if (userNameInput) userNameInput.value = room.name || '';
+                        if (roomIdInput) roomIdInput.value = room.roomId || '';
+                        if (roomPasswordInput) roomPasswordInput.value = room.password || '';
+                    };
+                    createContainer.appendChild(createDiv);
 
-                const joinDiv = document.createElement('div');
-                joinDiv.className = 'previous-room';
-                joinDiv.textContent = `${room.roomId} (رمز: ${room.password || 'بدون رمز'})`;
-                joinDiv.onclick = () => {
-                    document.getElementById('joinUserName').value = room.name || '';
-                    document.getElementById('joinRoomId').value = room.roomId;
-                    document.getElementById('joinRoomPassword').value = room.password || '';
-                };
-                joinContainer.appendChild(joinDiv);
-            });
+                    const joinDiv = document.createElement('div');
+                    joinDiv.className = 'previous-room';
+                    joinDiv.textContent = `${room.roomId} (کاربر: ${room.name})`;
+                    joinDiv.onclick = () => {
+                        const joinUserNameInput = document.getElementById('joinUserName');
+                        const joinRoomIdInput = document.getElementById('joinRoomId');
+                        const joinRoomPasswordInput = document.getElementById('joinRoomPassword');
+                        if (joinUserNameInput) joinUserNameInput.value = room.name || '';
+                        if (joinRoomIdInput) joinRoomIdInput.value = room.roomId || '';
+                        if (joinRoomPasswordInput) joinRoomPasswordInput.value = room.password || '';
+                    };
+                    joinContainer.appendChild(joinDiv);
+                });
+            } catch (error) {
+                console.error('Error in populatePreviousRooms:', error);
+                showToast('خطا در بارگذاری اتاق‌های قبلی', 'error');
+            }
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const header = content && content.previousElementSibling;
+            if (content && header) {
+                content.classList.toggle('active');
+                header.classList.toggle('active');
+            } else {
+                console.error(`Accordion element not found: ${id}`);
+            }
+        }
+
+        function togglePasswordVisibility(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            if (input && toggle) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    toggle.classList.remove('fa-eye');
+                    toggle.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    toggle.classList.remove('fa-eye-slash');
+                    toggle.classList.add('fa-eye');
+                }
+            } else {
+                console.error(`Password input or toggle not found: ${inputId}, ${toggleId}`);
+            }
+        }
+
+        function restrictInput(input) {
+            if (!input) return;
+            const value = input.value;
+            const regex = /^[a-zA-Z0-9]*$/;
+            const errorMessage = document.getElementById(`${input.id}Error`);
+            if (!regex.test(value)) {
+                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
+                if (errorMessage) {
+                    errorMessage.classList.add('active');
+                    setTimeout(() => errorMessage.classList.remove('active'), 3000);
+                }
+            } else {
+                if (errorMessage) errorMessage.classList.remove('active');
+            }
         }
 
         function selectAction(action) {
-            document.getElementById('actionSelection').style.display = 'none';
-            if (action === 'create') {
-                document.getElementById('createCallForm').classList.add('active');
-                generateRoomId();
-            } else {
-                document.getElementById('joinCallForm').classList.add('active');
+            try {
+                const actionSelection = document.getElementById('actionSelection');
+                const createCallForm = document.getElementById('createCallForm');
+                if (!actionSelection || !createCallForm) {
+                    console.error('Action selection or create call form not found');
+                    return;
+                }
+                actionSelection.style.display = 'none';
+                if (action === 'create') {
+                    createCallForm.classList.add('active');
+                    generateRoomId();
+                } else {
+                    const joinCallForm = document.getElementById('joinCallForm');
+                    if (joinCallForm) joinCallForm.classList.add('active');
+                }
+            } catch (error) {
+                console.error('Error in selectAction:', error);
+                showToast('خطا در انتخاب عملیات', 'error');
             }
         }
 
         function generateRoomId() {
-            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let roomId = 'call';
-            for (let i = 0; i < 8; i++) {
-                roomId += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('roomId').value = roomId;
-        }
-
-        function validateRoomId(input) {
-            const value = input.value;
-            const regex = /^[a-zA-Z0-9]{6,}$/;
-            if (!regex.test(value)) {
-                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
+            try {
+                const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                let roomId = 'call';
+                for (let i = 0; i < 8; i++) {
+                    roomId += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                const roomIdInput = document.getElementById('roomId');
+                if (roomIdInput) roomIdInput.value = roomId;
+            } catch (error) {
+                console.error('Error in generateRoomId:', error);
+                showToast('خطا در تولید شناسه اتاق', 'error');
             }
         }
 
         function backToActionSelection() {
-            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('actionSelection').style.display = 'block';
-            document.getElementById('callInfo').style.display = 'none';
-            document.getElementById('leaveCallBtn').classList.remove('active');
-            document.getElementById('copyRoomLinkBtn').style.display = 'none';
+            try {
+                const formSections = document.querySelectorAll('.form-section');
+                const successMessage = document.getElementById('successMessage');
+                const actionSelection = document.getElementById('actionSelection');
+                if (!formSections || !successMessage || !actionSelection) {
+                    console.error('Required DOM elements not found in backToActionSelection');
+                    return;
+                }
+                formSections.forEach(section => section.classList.remove('active'));
+                successMessage.style.display = 'none';
+                actionSelection.style.display = 'block';
+                // Clear form inputs
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.value = '';
+                    input.classList.remove('error');
+                    const errorMessage = document.getElementById(`${input.id}Error`);
+                    if (errorMessage) errorMessage.classList.remove('active');
+                });
+            } catch (error) {
+                console.error('Error in backToActionSelection:', error);
+                showToast('خطا در بازگشت به انتخاب عملیات', 'error');
+            }
         }
 
         async function createCall() {
-            const userName = document.getElementById('userName').value.trim();
-            const roomId = document.getElementById('roomId').value.trim();
-            const password = document.getElementById('roomPassword').value.trim();
+            try {
+                const userNameInput = document.getElementById('userName');
+                const roomIdInput = document.getElementById('roomId');
+                const roomPasswordInput = document.getElementById('roomPassword');
+                const miniPreviewCreate = document.getElementById('miniPreviewCreate');
+                const roomIdDisplay = document.getElementById('roomIdDisplay');
+                const roomPassDisplay = document.getElementById('roomPassDisplay');
+                const roomLinkDisplay = document.getElementById('roomLinkDisplay');
+                const passwordDisplaySection = document.getElementById('passwordDisplaySection');
+                const successMessage = document.getElementById('successMessage');
 
-            if (!userName || !roomId) {
-                showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
-                return;
+                if (!userNameInput || !roomIdInput || !roomIdDisplay || !roomPassDisplay || !roomLinkDisplay || !passwordDisplaySection || !successMessage) {
+                    showToast('خطا در رابط کاربری. لطفاً صفحه را رفرش کنید.', 'error');
+                    console.error('Required DOM elements not found in createCall');
+                    return;
+                }
+
+                const userName = userNameInput.value.trim();
+                const roomId = roomIdInput.value.trim();
+                const password = roomPasswordInput ? roomPasswordInput.value.trim() : '';
+                const miniPreview = miniPreviewCreate ? miniPreviewCreate.checked : false;
+
+                if (!userName || !roomId) {
+                    showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+                    return;
+                }
+
+                const regex = /^[a-zA-Z0-9]+$/;
+                if (!regex.test(userName)) {
+                    userNameInput.classList.add('error');
+                    document.getElementById('userNameError').classList.add('active');
+                    return;
+                }
+                if (!regex.test(roomId)) {
+                    roomIdInput.classList.add('error');
+                    document.getElementById('roomIdError').classList.add('active');
+                    return;
+                }
+                if (password && !regex.test(password)) {
+                    roomPasswordInput.classList.add('error');
+                    document.getElementById('roomPasswordError').classList.add('active');
+                    return;
+                }
+
+                if (!/^[a-zA-Z0-9]{6,}$/.test(roomId)) {
+                    showToast('شناسه اتاق باید حداقل ۶ کاراکتر و فقط شامل حروف انگلیسی و اعداد باشد', 'error');
+                    return;
+                }
+
+                callInfo = { roomId, password, miniPreview };
+                userInfo = { name: userName };
+                saveToLocalStorage();
+
+                const linkParams = [`proxy`, `room=${roomId}`, `host`];
+                if (password) linkParams.push(`p=${password}`);
+                if (miniPreview) linkParams.push(`minipreview`);
+                const link = `${SERVER_URL}/?${linkParams.join('&')}`;
+                
+                roomIdDisplay.textContent = roomId;
+                roomPassDisplay.textContent = password || 'بدون رمز';
+                roomLinkDisplay.textContent = link;
+                passwordDisplaySection.style.display = password ? 'flex' : 'none';
+                successMessage.style.display = 'block';
+
+                showToast('اتاق تماس با موفقیت ایجاد شد!', 'success');
+            } catch (error) {
+                console.error('Error in createCall:', error);
+                showToast('خطا در ایجاد تماس. لطفاً دوباره تلاش کنید.', 'error');
             }
-
-            if (!/^[a-zA-Z0-9]{6,}$/.test(roomId)) {
-                showToast('شناسه اتاق باید حداقل ۶ کاراکتر و فقط شامل حروف انگلیسی و اعداد باشد', 'error');
-                return;
-            }
-
-            callInfo = { roomId, password, miniPreview: document.getElementById('miniPreviewCreate').checked };
-            userInfo = { name: userName };
-            saveToLocalStorage();
-
-            const linkParams = [`proxy`, `room=${roomId}`, `host`];
-            if (password) linkParams.push(`p=${password}`);
-            if (callInfo.miniPreview) linkParams.push(`minipreview`);
-            const link = `${SERVER_URL}/?${linkParams.join('&')}`;
-            document.getElementById('roomIdDisplay').textContent = roomId;
-            document.getElementById('roomPassDisplay').textContent = password || 'بدون رمز';
-            document.getElementById('roomLinkDisplay').textContent = link;
-            document.getElementById('passwordDisplaySection').style.display = password ? 'flex' : 'none';
-            document.getElementById('successMessage').style.display = 'block';
-
-            showToast('اتاق تماس با موفقیت ایجاد شد!', 'success');
         }
 
         async function enterCall() {
             const loadingOverlay = document.getElementById('loadingOverlay');
+            if (!loadingOverlay) {
+                console.error('Loading overlay not found');
+                return;
+            }
             loadingOverlay.classList.add('active');
 
             try {
+                if (!callInfo.roomId || !userInfo.name) {
+                    throw new Error('Missing call or user information');
+                }
+
+                const serverAvailable = await checkServerAvailability();
+                if (!serverAvailable) {
+                    throw new Error('Server is not available');
+                }
+
                 const { success, stream } = await checkMediaAccess();
                 if (!success) throw new Error('Media access failed');
 
                 localStream = stream;
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('callContainer').classList.add('active');
-                document.getElementById('callInfo').style.display = 'flex';
-                document.getElementById('leaveCallBtn').classList.add('active');
-                document.getElementById('copyRoomLinkBtn').style.display = 'inline-block';
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const callInfoElement = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const callNameDisplay = document.getElementById('callNameDisplay');
+                const userNameDisplay = document.getElementById('userNameDisplay');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
 
-                document.getElementById('callNameDisplay').textContent = `اتاق ${callInfo.roomId}`;
-                document.getElementById('userNameDisplay').textContent = userInfo.name;
-                document.getElementById('userInfoDisplay').innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
+                if (!loginScreen || !callContainer || !callInfoElement || !leaveCallBtn || !copyRoomLinkBtn || !callNameDisplay || !userNameDisplay || !userInfoDisplay) {
+                    throw new Error('Required DOM elements not found');
+                }
+
+                loginScreen.style.display = 'none';
+                callContainer.classList.add('active');
+                callInfoElement.style.display = 'flex';
+                leaveCallBtn.classList.add('active');
+                copyRoomLinkBtn.style.display = 'inline-block';
+
+                callNameDisplay.textContent = `اتاق ${callInfo.roomId}`;
+                userNameDisplay.textContent = userInfo.name;
+                userInfoDisplay.innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
                 updateSideMenu();
 
+                resetVideoFrame();
                 const linkParams = [`proxy`, `room=${callInfo.roomId}`, `host`];
                 if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
                 if (callInfo.miniPreview) linkParams.push(`minipreview`);
                 const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
                 const iframe = document.getElementById('mainVideoFrame');
+                if (!iframe) throw new Error('Video iframe not found');
                 iframe.src = callUrl;
 
                 iframe.onload = () => {
@@ -980,55 +1319,115 @@
                     startCallTimer();
                     showToast('به تماس خوش آمدید!', 'success');
                 };
+                iframe.onerror = () => {
+                    throw new Error('Failed to load call iframe');
+                };
             } catch (error) {
+                console.error('Error in enterCall:', error);
                 loadingOverlay.classList.remove('active');
-                showToast('خطا در اتصال به سرور. لطفاً بعداً تلاش کنید.', 'error');
+                showToast('خطا در اتصال به تماس. لطفاً سرور یا اطلاعات را بررسی کنید.', 'error');
                 if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
                     localStream = null;
                 }
+                resetUI();
             }
         }
 
         async function joinCall() {
             const loadingOverlay = document.getElementById('loadingOverlay');
-            loadingOverlay.classList.add('active');
-
-            const userName = document.getElementById('joinUserName').value.trim();
-            const roomId = document.getElementById('joinRoomId').value.trim();
-            const password = document.getElementById('joinRoomPassword').value.trim();
-
-            if (!userName || !roomId) {
-                loadingOverlay.classList.remove('active');
-                showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+            if (!loadingOverlay) {
+                console.error('Loading overlay not found');
                 return;
             }
+            loadingOverlay.classList.add('active');
 
             try {
+                const userNameInput = document.getElementById('joinUserName');
+                const roomIdInput = document.getElementById('joinRoomId');
+                const roomPasswordInput = document.getElementById('joinRoomPassword');
+                if (!userNameInput || !roomIdInput) {
+                    throw new Error('Required input elements not found');
+                }
+
+                const userName = userNameInput.value.trim();
+                const roomId = roomIdInput.value.trim();
+                const password = roomPasswordInput ? roomPasswordInput.value.trim() : '';
+                const miniPreview = document.getElementById('miniPreviewJoin') ? document.getElementById('miniPreviewJoin').checked : false;
+
+                if (!userName || !roomId) {
+                    loadingOverlay.classList.remove('active');
+                    showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+                    return;
+                }
+
+                const regex = /^[a-zA-Z0-9]+$/;
+                if (!regex.test(userName)) {
+                    userNameInput.classList.add('error');
+                    document.getElementById('joinUserNameError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+                if (!regex.test(roomId)) {
+                    roomIdInput.classList.add('error');
+                    document.getElementById('joinRoomIdError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+                if (password && !regex.test(password)) {
+                    roomPasswordInput.classList.add('error');
+                    document.getElementById('joinRoomPasswordError').classList.add('active');
+                    loadingOverlay.classList.remove('active');
+                    return;
+                }
+
+                const serverAvailable = await checkServerAvailability();
+                if (!serverAvailable) {
+                    throw new Error('Server is not available');
+                }
+
                 const { success, stream } = await checkMediaAccess();
                 if (!success) throw new Error('Media access failed');
 
                 localStream = stream;
-                callInfo = { roomId, password, miniPreview: document.getElementById('miniPreviewJoin').checked };
+                callInfo = { roomId, password, miniPreview };
                 userInfo = { name: userName };
                 saveToLocalStorage();
 
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('callContainer').classList.add('active');
-                document.getElementById('callInfo').style.display = 'flex';
-                document.getElementById('leaveCallBtn').classList.add('active');
-                document.getElementById('copyRoomLinkBtn').style.display = 'inline-block';
+                const loginScreen = document.getElementById('loginScreen');
+                const callContainer = document.getElementById('callContainer');
+                const callInfoElement = document.getElementById('callInfo');
+                const leaveCallBtn = document.getElementById('leaveCallBtn');
+                const copyRoomLinkBtn = document.getElementById('copyRoomLinkBtn');
+                const callNameDisplay = document.getElementById('callNameDisplay');
+                const userNameDisplay = document.getElementById('userNameDisplay');
+                const userInfoDisplay = document.getElementById('userInfoDisplay');
 
-                document.getElementById('callNameDisplay').textContent = `اتاق ${callInfo.roomId}`;
-                document.getElementById('userNameDisplay').textContent = userInfo.name;
-                document.getElementById('userInfoDisplay').innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
+                if (!loginScreen || !callContainer || !callInfoElement || !leaveCallBtn || !copyRoomLinkBtn || !callNameDisplay || !userNameDisplay || !userInfoDisplay) {
+                    throw new Error('Required DOM elements not found');
+                }
+
+                loginScreen.style.display = 'none';
+                callContainer.classList.add('active');
+                callInfoElement.style.display = 'flex';
+                leaveCallBtn.classList.add('active');
+                copyRoomLinkBtn.style.display = 'inline-block';
+
+                callNameDisplay.textContent = `اتاق ${callInfo.roomId}`;
+                userNameDisplay.textContent = userInfo.name;
+                userInfoDisplay.innerHTML = `<i class="fas fa-user"></i> ${userInfo.name}`;
                 updateSideMenu();
 
+                resetVideoFrame();
                 const linkParams = [`room=${callInfo.roomId}`];
                 if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
                 if (callInfo.miniPreview) linkParams.push(`minipreview`);
                 const callUrl = `${SERVER_URL}/?${linkParams.join('&')}`;
                 const iframe = document.getElementById('mainVideoFrame');
+                if (!iframe) throw new Error('Video iframe not found');
                 iframe.src = callUrl;
 
                 iframe.onload = () => {
@@ -1036,135 +1435,206 @@
                     startCallTimer();
                     showToast('به تماس خوش آمدید!', 'success');
                 };
+                iframe.onerror = () => {
+                    throw new Error('Failed to load call iframe');
+                };
             } catch (error) {
+                console.error('Error in joinCall:', error);
                 loadingOverlay.classList.remove('active');
-                showToast('خطا در اتصال به سرور. لطفاً بعداً تلاش کنید.', 'error');
+                showToast('خطا در اتصال به تماس. لطفاً سرور یا اطلاعات را بررسی کنید.', 'error');
                 if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
+                    localStream.getTracks().forEach(track => {
+                        track.stop();
+                        track.enabled = false;
+                    });
                     localStream = null;
                 }
+                resetUI();
+            }
+        }
+
+        function resetVideoFrame() {
+            try {
+                const videoContainer = document.getElementById('videoContainer');
+                if (!videoContainer) {
+                    console.error('Video container not found');
+                    return;
+                }
+                const oldIframe = document.getElementById('mainVideoFrame');
+                if (oldIframe) {
+                    oldIframe.src = '';
+                    oldIframe.remove();
+                }
+                const newIframe = document.createElement('iframe');
+                newIframe.id = 'mainVideoFrame';
+                newIframe.className = 'video-iframe';
+                newIframe.setAttribute('allow', 'camera; microphone; display-capture; fullscreen');
+                newIframe.setAttribute('allowfullscreen', '');
+                videoContainer.appendChild(newIframe);
+            } catch (error) {
+                console.error('Error in resetVideoFrame:', error);
+                showToast('خطا در بازنشانی ویدئو', 'error');
             }
         }
 
         function leaveCall() {
             if (!document.getElementById('callContainer').classList.contains('active')) {
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('actionSelection').style.display = 'block';
-                document.getElementById('callInfo').style.display = 'none';
-                document.getElementById('leaveCallBtn').classList.remove('active');
-                document.getElementById('copyRoomLinkBtn').style.display = 'none';
+                resetUI();
                 return;
             }
 
             if (confirm('آیا از خروج از تماس اطمینان دارید؟')) {
-                if (timerInterval) clearInterval(timerInterval);
-                if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
-                    localStream = null;
-                }
-                document.getElementById('mainVideoFrame').src = '';
-                document.getElementById('callContainer').classList.remove('active');
-                document.getElementById('callInfo').style.display = 'none';
-                document.getElementById('leaveCallBtn').classList.remove('active');
-                document.getElementById('copyRoomLinkBtn').style.display = 'none';
-                document.getElementById('sideMenu').classList.remove('active');
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-                document.getElementById('successMessage').style.display = 'none';
-                document.getElementById('actionSelection').style.display = 'block';
-                document.querySelectorAll('.form-input').forEach(input => input.value = '');
-                document.getElementById('miniPreviewCreate').checked = false;
-                document.getElementById('miniPreviewJoin').checked = false;
-                callInfo = {};
-                userInfo = {};
-                showToast('شما از تماس خارج شدید', 'success');
-                localStorage.removeItem('callInfo');
-                localStorage.removeItem('userInfo');
-            }
-        }
+                try {
+                    // Stop timer
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    callStartTime = null;
 
-        function showLoading(show) {
-            const overlay = document.getElementById('loadingOverlay');
-            if (show) overlay.classList.add('active');
-            else overlay.classList.remove('active');
+                    // Stop media stream
+                    if (localStream) {
+                        localStream.getTracks().forEach(track => {
+                            track.stop();
+                            track.enabled = false;
+                        });
+                        localStream = null;
+                    }
+
+                    // Reset global variables
+                    callInfo = {};
+                    userInfo = {};
+
+                    // Reset UI
+                    resetUI();
+
+                    showToast('شما از تماس خارج شدید', 'success');
+                } catch (error) {
+                    console.error('Error in leaveCall:', error);
+                    showToast('خطا در خروج از تماس', 'error');
+                    resetUI();
+                }
+            }
         }
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
-            toastMessage.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--success)';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            if (toast && toastMessage) {
+                toastMessage.textContent = message;
+                toast.style.background = type === 'error' ? 'var(--danger)' : 'var(--success)';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            } else {
+                console.error('Toast elements not found');
+            }
         }
 
         function handleKeyboardShortcuts(e) {
-            if (e.key === 'Escape' && document.getElementById('callContainer').classList.contains('active')) {
+            if (e.key === 'Escape' && document.getElementById('callContainer')?.classList.contains('active')) {
                 leaveCall();
             }
         }
 
         function handleBeforeUnload(e) {
-            if (document.getElementById('callContainer').classList.contains('active')) {
+            if (document.getElementById('callContainer')?.classList.contains('active')) {
                 e.preventDefault();
                 e.returnValue = 'آیا از خروج از تماس اطمینان دارید؟';
             }
         }
 
         function toggleSideMenu() {
-            document.getElementById('sideMenu').classList.toggle('active');
+            const sideMenu = document.getElementById('sideMenu');
+            if (sideMenu) sideMenu.classList.toggle('active');
         }
 
         function updateSideMenu() {
-            document.getElementById('menuRoomId').textContent = callInfo.roomId || '';
-            document.getElementById('menuRoomPassword').textContent = callInfo.password || '';
-            document.getElementById('menuPasswordSection').style.display = callInfo.password ? 'flex' : 'none';
+            try {
+                const menuRoomId = document.getElementById('menuRoomId');
+                const menuRoomPassword = document.getElementById('menuRoomPassword');
+                const menuPasswordSection = document.getElementById('menuPasswordSection');
+                if (!menuRoomId || !menuRoomPassword || !menuPasswordSection) {
+                    console.error('Side menu elements not found');
+                    return;
+                }
+                menuRoomId.textContent = callInfo.roomId || '';
+                menuRoomPassword.textContent = callInfo.password || '';
+                menuPasswordSection.style.display = callInfo.password ? 'flex' : 'none';
+            } catch (error) {
+                console.error('Error in updateSideMenu:', error);
+                showToast('خطا در به‌روزرسانی منوی کناری', 'error');
+            }
         }
 
         function copyRoomLink() {
-            const linkParams = [`room=${callInfo.roomId}`];
-            if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
-            if (callInfo.miniPreview) linkParams.push(`minipreview`);
-            const roomLink = `${SERVER_URL}/?${linkParams.join('&')}`;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(roomLink)
-                    .then(() => showToast('لینک تماس کپی شد!', 'success'))
-                    .catch(() => fallbackCopyText(roomLink));
-            } else {
-                fallbackCopyText(roomLink);
+            try {
+                const linkParams = [`room=${callInfo.roomId}`];
+                if (callInfo.password) linkParams.push(`p=${callInfo.password}`);
+                if (callInfo.miniPreview) linkParams.push(`minipreview`);
+                const roomLink = `${SERVER_URL}/?${linkParams.join('&')}`;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(roomLink)
+                        .then(() => showToast('لینک تماس کپی شد!', 'success'))
+                        .catch(() => fallbackCopyText(roomLink));
+                } else {
+                    fallbackCopyText(roomLink);
+                }
+            } catch (error) {
+                console.error('Error in copyRoomLink:', error);
+                showToast('خطا در کپی لینک تماس', 'error');
             }
         }
 
         function startCallTimer() {
-            callStartTime = Date.now();
-            timerInterval = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
-                const hours = Math.floor(elapsed / 3600);
-                const minutes = Math.floor((elapsed % 3600) / 60);
-                const seconds = elapsed % 60;
-                document.getElementById('callTimer').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }, 1000);
+            try {
+                callStartTime = Date.now();
+                timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                    const hours = Math.floor(elapsed / 3600);
+                    const minutes = Math.floor((elapsed % 3600) / 60);
+                    const seconds = elapsed % 60;
+                    const callTimer = document.getElementById('callTimer');
+                    if (callTimer) {
+                        callTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error('Error in startCallTimer:', error);
+                showToast('خطا در راه‌اندازی تایمر تماس', 'error');
+            }
         }
 
         function copyText(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text)
-                    .then(() => showToast('متن کپی شد!', 'success'))
-                    .catch(() => fallbackCopyText(text));
-            } else {
-                fallbackCopyText(text);
+            try {
+                const textElement = document.getElementById(elementId);
+                if (!textElement) throw new Error(`Element ${elementId} not found`);
+                const text = textElement.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => showToast('متن کپی شد!', 'success'))
+                        .catch(() => fallbackCopyText(text));
+                } else {
+                    fallbackCopyText(text);
+                }
+            } catch (error) {
+                console.error('Error in copyText:', error);
+                showToast('خطا در کپی متن', 'error');
             }
         }
 
         function fallbackCopyText(text) {
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            showToast('متن کپی شد!', 'success');
+            try {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast('متن کپی شد!', 'success');
+            } catch (error) {
+                console.error('Error in fallbackCopyText:', error);
+                showToast('خطا در کپی متن', 'error');
+            }
         }
     </script>
 </body>
